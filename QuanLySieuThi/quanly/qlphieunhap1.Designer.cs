@@ -38,13 +38,6 @@
             this.label13 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.btn_in = new System.Windows.Forms.Button();
-            this.btn_luu = new System.Windows.Forms.Button();
-            this.btn_them = new System.Windows.Forms.Button();
-            this.bnt_sua = new System.Windows.Forms.Button();
-            this.btn_Thoat = new System.Windows.Forms.Button();
-            this.btn_xoa = new System.Windows.Forms.Button();
-            this.btn_reset = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.txt_gianhap = new System.Windows.Forms.TextBox();
             this.txt_mathuoc = new System.Windows.Forms.TextBox();
@@ -68,6 +61,13 @@
             this.txt_mhd = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.btn_in = new System.Windows.Forms.Button();
+            this.btn_luu = new System.Windows.Forms.Button();
+            this.btn_them = new System.Windows.Forms.Button();
+            this.bnt_sua = new System.Windows.Forms.Button();
+            this.btn_Thoat = new System.Windows.Forms.Button();
+            this.btn_xoa = new System.Windows.Forms.Button();
+            this.btn_reset = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dta1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dta2)).BeginInit();
             this.groupBox2.SuspendLayout();
@@ -182,115 +182,6 @@
             this.groupBox2.TabIndex = 86;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Thực Hiện Công việc";
-            // 
-            // btn_in
-            // 
-            this.btn_in.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_in.Image = global::QuanLySieuThi.Properties.Resources.Ziggy19_Microsoft_Office_Mac_Tilt_Excel;
-            this.btn_in.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btn_in.Location = new System.Drawing.Point(61, 297);
-            this.btn_in.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_in.Name = "btn_in";
-            this.btn_in.Size = new System.Drawing.Size(136, 52);
-            this.btn_in.TabIndex = 5;
-            this.btn_in.Text = "In";
-            this.btn_in.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_in.UseVisualStyleBackColor = true;
-            this.btn_in.Click += new System.EventHandler(this.btn_in_Click);
-            // 
-            // btn_luu
-            // 
-            this.btn_luu.Enabled = false;
-            this.btn_luu.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_luu.Image = global::QuanLySieuThi.Properties.Resources.Custom_Icon_Design_Pretty_Office_7_Save;
-            this.btn_luu.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btn_luu.Location = new System.Drawing.Point(287, 47);
-            this.btn_luu.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_luu.Name = "btn_luu";
-            this.btn_luu.Size = new System.Drawing.Size(136, 54);
-            this.btn_luu.TabIndex = 3;
-            this.btn_luu.Text = "Lưu";
-            this.btn_luu.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_luu.UseVisualStyleBackColor = true;
-            this.btn_luu.Click += new System.EventHandler(this.btn_luu_Click);
-            // 
-            // btn_them
-            // 
-            this.btn_them.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btn_them.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_them.Image = global::QuanLySieuThi.Properties.Resources.Awicons_Vista_Artistic_Add__1_;
-            this.btn_them.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btn_them.Location = new System.Drawing.Point(61, 47);
-            this.btn_them.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_them.Name = "btn_them";
-            this.btn_them.Size = new System.Drawing.Size(136, 54);
-            this.btn_them.TabIndex = 0;
-            this.btn_them.Text = "Thêm";
-            this.btn_them.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_them.UseVisualStyleBackColor = true;
-            this.btn_them.Click += new System.EventHandler(this.btn_them_Click);
-            // 
-            // bnt_sua
-            // 
-            this.bnt_sua.Enabled = false;
-            this.bnt_sua.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.bnt_sua.Image = global::QuanLySieuThi.Properties.Resources.Oxygen_Icons_org_Oxygen_Actions_document_edit;
-            this.bnt_sua.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.bnt_sua.Location = new System.Drawing.Point(61, 124);
-            this.bnt_sua.Margin = new System.Windows.Forms.Padding(4);
-            this.bnt_sua.Name = "bnt_sua";
-            this.bnt_sua.Size = new System.Drawing.Size(136, 54);
-            this.bnt_sua.TabIndex = 1;
-            this.bnt_sua.Text = "Sửa";
-            this.bnt_sua.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.bnt_sua.UseVisualStyleBackColor = true;
-            this.bnt_sua.Click += new System.EventHandler(this.bnt_sua_Click);
-            // 
-            // btn_Thoat
-            // 
-            this.btn_Thoat.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_Thoat.Image = global::QuanLySieuThi.Properties.Resources.Hopstarter_Sleek_Xp_Software_Windows_Close_Program;
-            this.btn_Thoat.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btn_Thoat.Location = new System.Drawing.Point(287, 212);
-            this.btn_Thoat.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_Thoat.Name = "btn_Thoat";
-            this.btn_Thoat.Size = new System.Drawing.Size(136, 54);
-            this.btn_Thoat.TabIndex = 6;
-            this.btn_Thoat.Text = "Thoát";
-            this.btn_Thoat.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_Thoat.UseVisualStyleBackColor = true;
-            this.btn_Thoat.Click += new System.EventHandler(this.btn_Thoat_Click);
-            // 
-            // btn_xoa
-            // 
-            this.btn_xoa.Enabled = false;
-            this.btn_xoa.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_xoa.Image = global::QuanLySieuThi.Properties.Resources.Custom_Icon_Design_Pretty_Office_8_Trash_can;
-            this.btn_xoa.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btn_xoa.Location = new System.Drawing.Point(61, 212);
-            this.btn_xoa.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_xoa.Name = "btn_xoa";
-            this.btn_xoa.Size = new System.Drawing.Size(136, 54);
-            this.btn_xoa.TabIndex = 2;
-            this.btn_xoa.Text = "Xóa";
-            this.btn_xoa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_xoa.UseVisualStyleBackColor = true;
-            this.btn_xoa.Click += new System.EventHandler(this.btn_xoa_Click);
-            // 
-            // btn_reset
-            // 
-            this.btn_reset.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btn_reset.Image = global::QuanLySieuThi.Properties.Resources.Oxygen_Icons_org_Oxygen_Actions_document_revert;
-            this.btn_reset.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.btn_reset.Location = new System.Drawing.Point(287, 124);
-            this.btn_reset.Margin = new System.Windows.Forms.Padding(4);
-            this.btn_reset.Name = "btn_reset";
-            this.btn_reset.Size = new System.Drawing.Size(136, 54);
-            this.btn_reset.TabIndex = 4;
-            this.btn_reset.Text = "Nhập lại";
-            this.btn_reset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btn_reset.UseVisualStyleBackColor = true;
-            this.btn_reset.Click += new System.EventHandler(this.btn_reset_Click);
             // 
             // groupBox1
             // 
@@ -563,6 +454,115 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // btn_in
+            // 
+            this.btn_in.Font = new System.Drawing.Font("Tahoma", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_in.Image = global::QuanLySieuThi.Properties.Resources.Ziggy19_Microsoft_Office_Mac_Tilt_Excel;
+            this.btn_in.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn_in.Location = new System.Drawing.Point(61, 297);
+            this.btn_in.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_in.Name = "btn_in";
+            this.btn_in.Size = new System.Drawing.Size(136, 52);
+            this.btn_in.TabIndex = 5;
+            this.btn_in.Text = "In";
+            this.btn_in.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_in.UseVisualStyleBackColor = true;
+            this.btn_in.Click += new System.EventHandler(this.btn_in_Click);
+            // 
+            // btn_luu
+            // 
+            this.btn_luu.Enabled = false;
+            this.btn_luu.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_luu.Image = global::QuanLySieuThi.Properties.Resources.Custom_Icon_Design_Pretty_Office_7_Save;
+            this.btn_luu.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn_luu.Location = new System.Drawing.Point(287, 47);
+            this.btn_luu.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_luu.Name = "btn_luu";
+            this.btn_luu.Size = new System.Drawing.Size(136, 54);
+            this.btn_luu.TabIndex = 3;
+            this.btn_luu.Text = "Lưu";
+            this.btn_luu.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_luu.UseVisualStyleBackColor = true;
+            this.btn_luu.Click += new System.EventHandler(this.btn_luu_Click);
+            // 
+            // btn_them
+            // 
+            this.btn_them.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.btn_them.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_them.Image = global::QuanLySieuThi.Properties.Resources.Awicons_Vista_Artistic_Add__1_;
+            this.btn_them.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn_them.Location = new System.Drawing.Point(61, 47);
+            this.btn_them.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_them.Name = "btn_them";
+            this.btn_them.Size = new System.Drawing.Size(136, 54);
+            this.btn_them.TabIndex = 0;
+            this.btn_them.Text = "Thêm";
+            this.btn_them.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_them.UseVisualStyleBackColor = true;
+            this.btn_them.Click += new System.EventHandler(this.btn_them_Click);
+            // 
+            // bnt_sua
+            // 
+            this.bnt_sua.Enabled = false;
+            this.bnt_sua.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bnt_sua.Image = global::QuanLySieuThi.Properties.Resources.Oxygen_Icons_org_Oxygen_Actions_document_edit;
+            this.bnt_sua.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.bnt_sua.Location = new System.Drawing.Point(61, 124);
+            this.bnt_sua.Margin = new System.Windows.Forms.Padding(4);
+            this.bnt_sua.Name = "bnt_sua";
+            this.bnt_sua.Size = new System.Drawing.Size(136, 54);
+            this.bnt_sua.TabIndex = 1;
+            this.bnt_sua.Text = "Sửa";
+            this.bnt_sua.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.bnt_sua.UseVisualStyleBackColor = true;
+            this.bnt_sua.Click += new System.EventHandler(this.bnt_sua_Click);
+            // 
+            // btn_Thoat
+            // 
+            this.btn_Thoat.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_Thoat.Image = global::QuanLySieuThi.Properties.Resources.Hopstarter_Sleek_Xp_Software_Windows_Close_Program;
+            this.btn_Thoat.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn_Thoat.Location = new System.Drawing.Point(287, 212);
+            this.btn_Thoat.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_Thoat.Name = "btn_Thoat";
+            this.btn_Thoat.Size = new System.Drawing.Size(136, 54);
+            this.btn_Thoat.TabIndex = 6;
+            this.btn_Thoat.Text = "Thoát";
+            this.btn_Thoat.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_Thoat.UseVisualStyleBackColor = true;
+            this.btn_Thoat.Click += new System.EventHandler(this.btn_Thoat_Click);
+            // 
+            // btn_xoa
+            // 
+            this.btn_xoa.Enabled = false;
+            this.btn_xoa.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_xoa.Image = global::QuanLySieuThi.Properties.Resources.Custom_Icon_Design_Pretty_Office_8_Trash_can;
+            this.btn_xoa.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn_xoa.Location = new System.Drawing.Point(61, 212);
+            this.btn_xoa.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_xoa.Name = "btn_xoa";
+            this.btn_xoa.Size = new System.Drawing.Size(136, 54);
+            this.btn_xoa.TabIndex = 2;
+            this.btn_xoa.Text = "Xóa";
+            this.btn_xoa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_xoa.UseVisualStyleBackColor = true;
+            this.btn_xoa.Click += new System.EventHandler(this.btn_xoa_Click);
+            // 
+            // btn_reset
+            // 
+            this.btn_reset.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_reset.Image = global::QuanLySieuThi.Properties.Resources.Oxygen_Icons_org_Oxygen_Actions_document_revert;
+            this.btn_reset.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn_reset.Location = new System.Drawing.Point(287, 124);
+            this.btn_reset.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_reset.Name = "btn_reset";
+            this.btn_reset.Size = new System.Drawing.Size(136, 54);
+            this.btn_reset.TabIndex = 4;
+            this.btn_reset.Text = "Nhập lại";
+            this.btn_reset.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_reset.UseVisualStyleBackColor = true;
+            this.btn_reset.Click += new System.EventHandler(this.btn_reset_Click);
+            // 
             // qlphieunhap1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -589,6 +589,7 @@
             this.Name = "qlphieunhap1";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Quản Lý siêu thị";
+            this.Load += new System.EventHandler(this.qlphieunhap1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dta1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dta2)).EndInit();
             this.groupBox2.ResumeLayout(false);

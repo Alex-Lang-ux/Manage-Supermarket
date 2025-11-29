@@ -36,6 +36,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -70,6 +71,18 @@
     </Compile>
     <Compile Include="banhang\PhieuXuat.Designer.cs">
       <DependentUpon>PhieuXuat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="banhang\QuetQr.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="banhang\QuetQr.Designer.cs">
+      <DependentUpon>QuetQr.cs</DependentUpon>
+    </Compile>
+    <Compile Include="banhang\ThanhToanThanhCong.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="banhang\ThanhToanThanhCong.Designer.cs">
+      <DependentUpon>ThanhToanThanhCong.cs</DependentUpon>
     </Compile>
     <Compile Include="chuoiketnoi.cs" />
     <Compile Include="DangKy.cs">
@@ -109,6 +122,12 @@
     </Compile>
     <Compile Include="quanly\nhanvien.Designer.cs">
       <DependentUpon>nhanvien.cs</DependentUpon>
+    </Compile>
+    <Compile Include="quanly\qlhoadon.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="quanly\qlhoadon.Designer.cs">
+      <DependentUpon>qlhoadon.cs</DependentUpon>
     </Compile>
     <Compile Include="quanly\qlphieunhap1.cs">
       <SubType>Form</SubType>
@@ -165,6 +184,12 @@
     <EmbeddedResource Include="banhang\PhieuXuat.resx">
       <DependentUpon>PhieuXuat.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="banhang\QuetQr.resx">
+      <DependentUpon>QuetQr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="banhang\ThanhToanThanhCong.resx">
+      <DependentUpon>ThanhToanThanhCong.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="DangKy.resx">
       <DependentUpon>DangKy.cs</DependentUpon>
     </EmbeddedResource>
@@ -192,6 +217,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="quanly\nhanvien.resx">
       <DependentUpon>nhanvien.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="quanly\qlhoadon.resx">
+      <DependentUpon>qlhoadon.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="quanly\qlphieunhap1.resx">
       <DependentUpon>qlphieunhap1.cs</DependentUpon>
@@ -284,9 +312,6 @@
     <None Include="Resources\Oxygen-Icons.org-Oxygen-Actions-document-edit1.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Uneti.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\Custom-Icon-Design-Pretty-Office-7-Save.ico" />
   </ItemGroup>
   <ItemGroup>
@@ -366,6 +391,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\117885.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Resources\Payment Success.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

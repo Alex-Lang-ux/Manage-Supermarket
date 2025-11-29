@@ -14,11 +14,12 @@ namespace QuanLySieuThi
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
+        
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Dangnhap());
+            Application.Run(new main2());
         }
     }
 }

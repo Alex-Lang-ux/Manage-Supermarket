@@ -58,6 +58,7 @@
             this.lb_cn3 = new System.Windows.Forms.Label();
             this.lb_cn2 = new System.Windows.Forms.Label();
             this.lb_cn1 = new System.Windows.Forms.Label();
+            this.ql_hoadon = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -157,7 +158,8 @@
             this.ql_ncc,
             this.ql_khachhang,
             this.ql_nhanvien,
-            this.quảnLýSảnPhẩmToolStripMenuItem});
+            this.quảnLýSảnPhẩmToolStripMenuItem,
+            this.ql_hoadon});
             this.mn_quanly.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.mn_quanly.Name = "mn_quanly";
             this.mn_quanly.Size = new System.Drawing.Size(102, 32);
@@ -352,6 +354,14 @@
             this.lb_cn1.TabIndex = 15;
             this.lb_cn1.Text = "*                                              ";
             // 
+            // ql_hoadon
+            // 
+            this.ql_hoadon.Name = "ql_hoadon";
+            this.ql_hoadon.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
+            this.ql_hoadon.Size = new System.Drawing.Size(382, 32);
+            this.ql_hoadon.Text = "-Quản lý hóa đơn";
+            this.ql_hoadon.Click += new System.EventHandler(this.ql_hoadon_Click);
+            // 
             // main2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -418,5 +428,6 @@
         public System.Windows.Forms.Label lb_cn3;
         public System.Windows.Forms.Label lb_cn2;
         public System.Windows.Forms.Label lb_cn1;
+        private System.Windows.Forms.ToolStripMenuItem ql_hoadon;
     }
 }

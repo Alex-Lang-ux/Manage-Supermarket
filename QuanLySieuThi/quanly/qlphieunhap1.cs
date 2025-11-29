@@ -264,5 +264,10 @@ namespace QuanLySieuThi.quanly
             quanly.sanpham a = new quanly.sanpham();
             a.Show();
         }
+
+        private void qlphieunhap1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

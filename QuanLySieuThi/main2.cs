@@ -141,5 +141,11 @@ namespace QuanLySieuThi
         {
 
         }
+
+        private void ql_hoadon_Click(object sender, EventArgs e)
+        {
+            quanly.qlhoadon a = new quanly.qlhoadon();
+            a.Show();
+        }
     }
 }

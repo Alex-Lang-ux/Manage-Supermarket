@@ -113,7 +113,6 @@ D:\Github\Project\Csharp_QuanLySieuThi\QuanLySieuThi\QuanLySieuThi\obj\Debug\Qua
 D:\Github\Project\Csharp_QuanLySieuThi\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.exe
 D:\Github\Project\Csharp_QuanLySieuThi\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.pdb
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.csproj.AssemblyReference.cache
-C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.exe.config
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.csproj.ResolveComReference.cache
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.exe
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.pdb
@@ -140,3 +139,7 @@ C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLyS
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.tkquanly.resources
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.csproj.GenerateResource.cache
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.csproj.CoreCompileInputs.cache
+C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.banhang.QuetQr.resources
+C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.banhang.ThanhToanThanhCong.resources
+C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.quanly.qlhoadon.resources
+C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.exe.config

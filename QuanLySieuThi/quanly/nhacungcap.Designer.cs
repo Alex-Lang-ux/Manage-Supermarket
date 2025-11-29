@@ -100,9 +100,9 @@
             this.label6.Location = new System.Drawing.Point(83, 380);
             this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(79, 22);
+            this.label6.Size = new System.Drawing.Size(58, 22);
             this.label6.TabIndex = 47;
-            this.label6.Text = "Công nợ";
+            this.label6.Text = "Email";
             // 
             // txt_congno
             // 
