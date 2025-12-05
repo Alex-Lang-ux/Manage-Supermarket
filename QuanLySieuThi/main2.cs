@@ -29,8 +29,7 @@ namespace QuanLySieuThi
 
         public void tàiKhoảnNhânViênToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            tknhanvien a = new tknhanvien();
-            a.Show();
+           
         }
 
         public void mn_tkquanly_Click(object sender, EventArgs e)
@@ -93,12 +92,12 @@ namespace QuanLySieuThi
 
         private void bh_xuatle_Click(object sender, EventArgs e)
         {
-            banhang.PhieuXuat a = new banhang.PhieuXuat();
-            a.Show();
+           
         }
 
         private void bh_bannhieu_Click(object sender, EventArgs e)
         {
+            MessageBox.Show("Bạn chưa nhập tên tài khoản!", "Thông báo", MessageBoxButtons.OK);
             banhang.banhang a = new banhang.banhang();
             a.Show();
         }
@@ -123,8 +122,7 @@ namespace QuanLySieuThi
 
         private void ql_phieuxuat_Click(object sender, EventArgs e)
         {
-            quanly.qlphieuxuat a = new quanly.qlphieuxuat();
-            a.Show();
+            
         }
 
         private void lb_quyen_Click(object sender, EventArgs e)
@@ -145,6 +143,24 @@ namespace QuanLySieuThi
         private void ql_hoadon_Click(object sender, EventArgs e)
         {
             quanly.qlhoadon a = new quanly.qlhoadon();
+            a.Show();
+        }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void lậpPhiếuĐổiHàngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            banhang.btnCheck a = new banhang.btnCheck();
+            a.Show();
+
+        }
+
+        private void lậpPhiếuTrảHàngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            banhang.FormTraHang a = new banhang.FormTraHang();
             a.Show();
         }
     }

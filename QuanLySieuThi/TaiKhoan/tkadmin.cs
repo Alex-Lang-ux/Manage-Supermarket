@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,55 +11,116 @@ using System.Windows.Forms;
 
 namespace QuanLySieuThi
 {
-   
+
 
     public partial class tkadmin : Form
     {
-        public string chuoi = "select * from Admin";
+        string sqlSelect = "SELECT MaAdmin, TenDangNhap, MatKhau, HoTen, Email, SoDienThoai, NgayTao, QuyenHan FROM Admin";
         public tkadmin()
         {
             InitializeComponent();
-            chuoiketnoi.Chuoiketnoi(chuoi, dta1);
-            dta1.Columns[0].HeaderText = "Tài khoản";
-            dta1.Columns[1].HeaderText = "Mật khẩu";
+            LoadAdmin();
+            ClearForm();
+            dta1.AllowUserToAddRows = false;
+            dtpNgayTao.Enabled = false;
         }
 
+        private void LoadAdmin()
+        {
+            chuoiketnoi.Chuoiketnoi(sqlSelect, dta1);
+            dta1.Columns["MaAdmin"].HeaderText = "Mã Admin";
+            dta1.Columns["TenDangNhap"].HeaderText = "Tài khoản";
+            dta1.Columns["MatKhau"].HeaderText = "Mật khẩu";
+            dta1.Columns["HoTen"].HeaderText = "Họ tên";
+            dta1.Columns["Email"].HeaderText = "Email";
+            dta1.Columns["SoDienThoai"].HeaderText = "SĐT";
+            dta1.Columns["NgayTao"].HeaderText = "Ngày tạo";
+            dta1.Columns["QuyenHan"].HeaderText = "Quyền hạn";
+        }
+
+        private void ClearForm()
+        {
+            txt_tk.Clear();
+            txt_mk.Clear();
+            txt_hoten.Clear();
+            txt_email.Clear();
+            txt_sdt.Clear();
+            dtpNgayTao.Value = DateTime.Today;
+
+            txt_tk.Enabled = true;
+            txt_mk.Enabled = true;
+            dtpNgayTao.Enabled = true;
+
+            btn_them.Enabled = true;
+            btn_sua.Enabled = false;
+            btn_xoa.Enabled = false;
+
+            dta1.ClearSelection();
+        }
+        private string GachaSoMa()
+        {
+            Random rnd = new Random();
+            string code;
+
+            using (SqlConnection con = new SqlConnection(chuoiketnoi.sqlcon))
+            {
+                con.Open();
+
+                do
+                {
+                    code = "";
+                    for (int i = 0; i < 6; i++)
+                        code += rnd.Next(0, 10).ToString();
+                    SqlCommand cmd = new SqlCommand("SELECT COUNT(*) FROM Admin WHERE MaAdmin=@code", con);
+                    cmd.Parameters.AddWithValue("@code", code);
+                    int count = (int)cmd.ExecuteScalar();
+
+                    if (count == 0)
+                        break;
+                }
+                while (true);
+            }
+
+            return code;
+        }
         private void btn_them_Click(object sender, EventArgs e)
         {
-            if (txt_tk.Text == "" || txt_mk.Text == "")
+            if (string.IsNullOrWhiteSpace(txt_tk.Text) || string.IsNullOrWhiteSpace(txt_mk.Text))
             {
-                MessageBox.Show("Bạn chưa nhập đầy đủ thông tin ! vui lòng kiểm tra lại ", "Error", MessageBoxButtons.OK);
+                MessageBox.Show("Tài khoản và mật khẩu không được bỏ trống!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
             }
-            else
-            {
-                try
-                {
-                    string select = "select count(*) from Admin where tk='" + txt_tk.Text + "'";
-                    string them1 = "insert into Admin Values ('" + txt_tk.Text + "','" + txt_mk.Text + "')";
-                    chuoiketnoi.Them(select, txt_tk.Text.Trim(), txt_mk.Text.Trim(), them1, dta1);
-                    chuoiketnoi.Chuoiketnoi(chuoi, dta1);
-                    dta1.Columns[0].HeaderText = "Tài khoản";
-                    dta1.Columns[1].HeaderText = "Mật khẩu";
-                    txt_tk.Clear();
-                    txt_mk.Clear();
 
-                    txt_tk.Focus();
-                    btn_them.Enabled = true;
-                    btn_xoa.Enabled = false;
-                    btn_sua.Enabled = false;
-                }
-                catch
+            string newCode = GachaSoMa();
+
+            string sql = "INSERT INTO Admin (MaAdmin, TenDangNhap, MatKhau, HoTen, Email, SoDienThoai, NgayTao, QuyenHan) " +
+                         "VALUES (@ma, @tk, @mk, @hoten, @email, @sdt, @ngaytao, @quyen)";
+
+            using (SqlConnection con = new SqlConnection(chuoiketnoi.sqlcon))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(sql, con))
                 {
-                    MessageBox.Show("Tài khoản đã tồn tại ", "Error", MessageBoxButtons.OKCancel);
+                    cmd.Parameters.AddWithValue("@ma", newCode);
+                    cmd.Parameters.AddWithValue("@tk", txt_tk.Text);
+                    cmd.Parameters.AddWithValue("@mk", txt_mk.Text);
+                    cmd.Parameters.AddWithValue("@hoten", txt_hoten.Text);
+                    cmd.Parameters.AddWithValue("@email", txt_email.Text);
+                    cmd.Parameters.AddWithValue("@sdt", txt_sdt.Text);
+                    cmd.Parameters.AddWithValue("@ngaytao", dtpNgayTao.Value);
+                    cmd.Parameters.AddWithValue("@quyen", "Admin");
+
+                    cmd.ExecuteNonQuery();
                 }
             }
+
+            LoadAdmin();
+            ClearForm();
         }
 
         private void btn_nhaplai_Click(object sender, EventArgs e)
         {
-            txt_tk.Clear();
-            txt_mk.Clear();
-            txt_tk.Focus();
+            ClearForm();
             txt_tk.Enabled = true;
             btn_them.Enabled = true;
             btn_xoa.Enabled = false;
@@ -67,37 +129,62 @@ namespace QuanLySieuThi
 
         private void btn_sua_Click(object sender, EventArgs e)
         {
-            string sql = "Update Admin set mk ='" + txt_mk.Text + "' where tk = '" + txt_tk.Text + "'";
-            chuoiketnoi.Execute1(sql);
-            chuoiketnoi.Chuoiketnoi(chuoi, dta1);
-            dta1.Columns[0].HeaderText = "Tài khoản";
-            dta1.Columns[1].HeaderText = "Mật khẩu";
-            txt_tk.Clear();
-            txt_mk.Clear();
-            txt_tk.Focus();
-            txt_tk.Enabled = true;
-            btn_them.Enabled = true;
-            btn_xoa.Enabled = false;
-            btn_sua.Enabled = false;
+            string sql = "UPDATE Admin SET MatKhau=@mk, HoTen=@hoten, Email=@email, SoDienThoai=@sdt WHERE TenDangNhap=@tk";
+
+            using (SqlConnection con = new SqlConnection(chuoiketnoi.sqlcon))
+            {
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand(sql, con))
+                {
+                    cmd.Parameters.AddWithValue("@mk", txt_mk.Text);
+                    cmd.Parameters.AddWithValue("@hoten", txt_hoten.Text);
+                    cmd.Parameters.AddWithValue("@email", txt_email.Text);
+                    cmd.Parameters.AddWithValue("@sdt", txt_sdt.Text);
+                    cmd.Parameters.AddWithValue("@tk", txt_tk.Text);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+
+            LoadAdmin();
+            ClearForm();
 
         }
 
         private void btn_xoa_Click(object sender, EventArgs e)
         {
-            string sql = "Delete from Admin  where tk = '" + txt_tk.Text + "'";
-            chuoiketnoi.Execute(sql);
-            // MessageBox.Show("Bạn xóa thành công ! ", "Thông báo", MessageBoxButtons.OK);
-            chuoiketnoi.Chuoiketnoi(chuoi, dta1);
-            dta1.Columns[0].HeaderText = "Tài khoản";
-            dta1.Columns[1].HeaderText = "Mật khẩu";
-            txt_tk.Clear();
-            txt_mk.Clear();
-            txt_tk.Focus();
-            txt_tk.Enabled = true;
-            btn_them.Enabled = true;
-            btn_xoa.Enabled = false;
-            btn_sua.Enabled = false;
+            int countAdmin = 0;
+            using (SqlConnection con = new SqlConnection(chuoiketnoi.sqlcon))
+            {
+                con.Open();
+                SqlCommand cmdCount = new SqlCommand("SELECT COUNT(*) FROM Admin", con);
+                countAdmin = (int)cmdCount.ExecuteScalar();
+            }
+
+            if (countAdmin <= 1)
+            {
+                MessageBox.Show("Không thể xóa tài khoản này vì phải luôn có ít nhất 1 Admin.", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (MessageBox.Show("Bạn có chắc chắn muốn xóa tài khoản này?", "Xác nhận", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                string sql = "DELETE FROM Admin WHERE TenDangNhap=@tk";
+                using (SqlConnection con = new SqlConnection(chuoiketnoi.sqlcon))
+                {
+                    con.Open();
+                    using (SqlCommand cmd = new SqlCommand(sql, con))
+                    {
+                        cmd.Parameters.AddWithValue("@tk", txt_tk.Text);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                LoadAdmin();
+                ClearForm();
+            }
         }
+
 
         private void btn_ex_Click(object sender, EventArgs e)
         {
@@ -110,10 +197,20 @@ namespace QuanLySieuThi
 
         private void dta1_Click(object sender, EventArgs e)
         {
-            int curow = dta1.CurrentRow.Index;
-            txt_tk.Text = dta1.Rows[curow].Cells[0].Value.ToString();
-            txt_mk.Text = dta1.Rows[curow].Cells[1].Value.ToString();
+            if (dta1.CurrentRow == null) return;
+            int r = dta1.CurrentRow.Index;
+
+            txt_tk.Text = dta1.Rows[r].Cells["TenDangNhap"].Value.ToString();
+            txt_mk.Text = dta1.Rows[r].Cells["MatKhau"].Value.ToString();
+            txt_hoten.Text = dta1.Rows[r].Cells["HoTen"].Value.ToString();
+            txt_email.Text = dta1.Rows[r].Cells["Email"].Value.ToString();
+            txt_sdt.Text = dta1.Rows[r].Cells["SoDienThoai"].Value.ToString();
+            dtpNgayTao.Value = Convert.ToDateTime(dta1.Rows[r].Cells["NgayTao"].Value);
+
             txt_tk.Enabled = false;
+            txt_mk.Enabled = true;
+            dtpNgayTao.Enabled = false;
+
             btn_them.Enabled = false;
             btn_sua.Enabled = true;
             btn_xoa.Enabled = true;
@@ -129,6 +226,23 @@ namespace QuanLySieuThi
         }
 
         private void tkadmin_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dta1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+        private void txt_sdt_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txt_sdt_TextChanged(object sender, EventArgs e)
         {
 
         }

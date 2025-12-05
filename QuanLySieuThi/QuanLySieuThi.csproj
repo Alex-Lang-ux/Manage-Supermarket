@@ -33,10 +33,20 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Guna.UI2, Version=2.0.4.7, Culture=neutral, PublicKeyToken=8b9d14aa5142e261, processorArchitecture=MSIL">
+      <HintPath>..\packages\Guna.UI2.WinForms.2.0.4.7\lib\net48\Guna.UI2.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Management" />
     <Reference Include="System.ServiceProcess" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,6 +64,18 @@
     <Compile Include="banhang\banhang.Designer.cs">
       <DependentUpon>banhang.cs</DependentUpon>
     </Compile>
+    <Compile Include="banhang\FormDoiHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="banhang\FormDoiHang.Designer.cs">
+      <DependentUpon>FormDoiHang.cs</DependentUpon>
+    </Compile>
+    <Compile Include="banhang\FormTraHang.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="banhang\FormTraHang.Designer.cs">
+      <DependentUpon>FormTraHang.cs</DependentUpon>
+    </Compile>
     <Compile Include="banhang\nhapnhieu.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,12 +87,6 @@
     </Compile>
     <Compile Include="banhang\PhieuNhap.Designer.cs">
       <DependentUpon>PhieuNhap.cs</DependentUpon>
-    </Compile>
-    <Compile Include="banhang\PhieuXuat.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="banhang\PhieuXuat.Designer.cs">
-      <DependentUpon>PhieuXuat.cs</DependentUpon>
     </Compile>
     <Compile Include="banhang\QuetQr.cs">
       <SubType>Form</SubType>
@@ -85,12 +101,6 @@
       <DependentUpon>ThanhToanThanhCong.cs</DependentUpon>
     </Compile>
     <Compile Include="chuoiketnoi.cs" />
-    <Compile Include="DangKy.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="DangKy.Designer.cs">
-      <DependentUpon>DangKy.cs</DependentUpon>
-    </Compile>
     <Compile Include="Dangnhap.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,17 +145,17 @@
     <Compile Include="quanly\qlphieunhap1.Designer.cs">
       <DependentUpon>qlphieunhap1.cs</DependentUpon>
     </Compile>
-    <Compile Include="quanly\qlphieuxuat.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="quanly\qlphieuxuat.Designer.cs">
-      <DependentUpon>qlphieuxuat.cs</DependentUpon>
-    </Compile>
     <Compile Include="quanly\sanpham.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="quanly\sanpham.Designer.cs">
       <DependentUpon>sanpham.cs</DependentUpon>
+    </Compile>
+    <Compile Include="quanly\TheKHTT.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="quanly\TheKHTT.Designer.cs">
+      <DependentUpon>TheKHTT.cs</DependentUpon>
     </Compile>
     <Compile Include="TaiKhoan\DoiMk.cs">
       <SubType>Form</SubType>
@@ -175,23 +185,23 @@
     <EmbeddedResource Include="banhang\banhang.resx">
       <DependentUpon>banhang.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="banhang\FormDoiHang.resx">
+      <DependentUpon>FormDoiHang.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="banhang\FormTraHang.resx">
+      <DependentUpon>FormTraHang.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="banhang\nhapnhieu.resx">
       <DependentUpon>nhapnhieu.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="banhang\PhieuNhap.resx">
       <DependentUpon>PhieuNhap.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="banhang\PhieuXuat.resx">
-      <DependentUpon>PhieuXuat.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="banhang\QuetQr.resx">
       <DependentUpon>QuetQr.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="banhang\ThanhToanThanhCong.resx">
       <DependentUpon>ThanhToanThanhCong.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="DangKy.resx">
-      <DependentUpon>DangKy.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Dangnhap.resx">
       <DependentUpon>Dangnhap.cs</DependentUpon>
@@ -224,11 +234,11 @@
     <EmbeddedResource Include="quanly\qlphieunhap1.resx">
       <DependentUpon>qlphieunhap1.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="quanly\qlphieuxuat.resx">
-      <DependentUpon>qlphieuxuat.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="quanly\sanpham.resx">
       <DependentUpon>sanpham.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="quanly\TheKHTT.resx">
+      <DependentUpon>TheKHTT.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TaiKhoan\DoiMk.resx">
       <DependentUpon>DoiMk.cs</DependentUpon>
@@ -242,6 +252,8 @@
     <EmbeddedResource Include="TaiKhoan\tkquanly.resx">
       <DependentUpon>tkquanly.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="app.manifest" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

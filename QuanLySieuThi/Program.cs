@@ -19,7 +19,7 @@ namespace QuanLySieuThi
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new main2());
+            Application.Run(new FormTraHang());
         }
     }
 }

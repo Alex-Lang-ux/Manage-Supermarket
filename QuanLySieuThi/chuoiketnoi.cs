@@ -175,42 +175,8 @@ namespace QuanLySieuThi
                 }
             }
         }
-        public static void Themdangky(string select, String tk, String pass, String sql1)
-        {
-            int i;
-            mycon = new SqlConnection(sqlcon);
-            mycon.Open();
-            string sql = select;
-            com = new SqlCommand(sql, mycon);
-            i = (int)com.ExecuteScalar();
-
-
-            if (i != 0)
-            {
-                MessageBox.Show("Tài khoản đã tồn tại ! ", "Error", MessageBoxButtons.OK);
-            }
-            else
-            {
-                try
-                {
-                    luu(sql1);
-
-
-                    if (MessageBox.Show("Thêm Thành công !Bạn có muốn đăng nhập luôn không ?", "Thông Báo ", MessageBoxButtons.OKCancel) == DialogResult.OK)
-                    {
-                        Dangnhap dt = new Dangnhap();
-                       dt.Show();
-                        DangKy a = new DangKy();
-                        a.Close();
-                    }
-                    mycon.Close();
-                }
-                catch
-                {
-                    MessageBox.Show("Tài khoản đã tồn tại", "Thông báo");
-                }
-            }
-        }
+        
+       
 
 
 
@@ -377,7 +343,49 @@ namespace QuanLySieuThi
                 }
             }
         }
-       
+        ///////////////////////////////////////////////////////////////////////////////
+        public static DataTable GetDataTable(string sql)
+        {
+            DataTable dt = new DataTable();
+            using (var con = new SqlConnection(sqlcon))
+            {
+                using (var da = new SqlDataAdapter(sql, con))
+                {
+                    da.Fill(dt);
+                }
+            }
+            return dt;
+        }
+        public static int ExecuteScalar(string sql)
+        {
+            using (var con = new SqlConnection(sqlcon))
+            {
+                con.Open();
+                using (var cmd = new SqlCommand(sql, con))
+                {
+                    return (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+        public static string GetValue(string sql)
+        {
+            try
+            {
+                using (var con = new SqlConnection(sqlcon))
+                using (var cmd = new SqlCommand(sql, con))
+                {
+                    con.Open();
+                    var obj = cmd.ExecuteScalar();
+                    return (obj == null || obj == DBNull.Value) ? string.Empty : obj.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi GetValue: " + ex.Message);
+                return string.Empty;
+            }
+        }
+
     }
 }
 

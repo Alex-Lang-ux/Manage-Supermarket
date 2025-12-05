@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dangnhap));
-            this.CheckBox1 = new System.Windows.Forms.CheckBox();
+            this.CheckBoxHienThiMatKhau = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.txt_mk = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -40,31 +40,31 @@
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // CheckBox1
+            // CheckBoxHienThiMatKhau
             // 
-            this.CheckBox1.AutoSize = true;
-            this.CheckBox1.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.CheckBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.CheckBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.CheckBox1.Location = new System.Drawing.Point(326, 291);
-            this.CheckBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.CheckBox1.Name = "CheckBox1";
-            this.CheckBox1.Size = new System.Drawing.Size(144, 22);
-            this.CheckBox1.TabIndex = 7;
-            this.CheckBox1.Text = "Hiển thị mật khẩu";
-            this.CheckBox1.UseVisualStyleBackColor = false;
-            this.CheckBox1.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
+            this.CheckBoxHienThiMatKhau.AutoSize = true;
+            this.CheckBoxHienThiMatKhau.BackColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.CheckBoxHienThiMatKhau.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CheckBoxHienThiMatKhau.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.CheckBoxHienThiMatKhau.Location = new System.Drawing.Point(326, 291);
+            this.CheckBoxHienThiMatKhau.Margin = new System.Windows.Forms.Padding(4);
+            this.CheckBoxHienThiMatKhau.Name = "CheckBoxHienThiMatKhau";
+            this.CheckBoxHienThiMatKhau.Size = new System.Drawing.Size(144, 22);
+            this.CheckBoxHienThiMatKhau.TabIndex = 7;
+            this.CheckBoxHienThiMatKhau.Text = "Hiển thị mật khẩu";
+            this.CheckBoxHienThiMatKhau.UseVisualStyleBackColor = false;
+            this.CheckBoxHienThiMatKhau.CheckedChanged += new System.EventHandler(this.CheckBox1_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -139,9 +139,9 @@
             this.label5.ForeColor = System.Drawing.Color.White;
             this.label5.Location = new System.Drawing.Point(3, 500);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(119, 51);
+            this.label5.Size = new System.Drawing.Size(159, 51);
             this.label5.TabIndex = 7;
-            this.label5.Text = "Lương Triều Dĩ \r\nTrần Minh Hòa\r\nĐặng Hoàng Hải ";
+            this.label5.Text = "Lương Triều Dĩ \r\nNguyễn Hồ Trường Nam\r\nĐặng Hoàng Hải ";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label4
@@ -190,6 +190,28 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Welcome to the";
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.label7.Location = new System.Drawing.Point(306, 517);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(217, 34);
+            this.label7.TabIndex = 11;
+            this.label7.Text = "Tutorial By\r\nGiảng Viên : ThS. Nguyễn Thị Thủy";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
+            this.label8.Location = new System.Drawing.Point(609, 291);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(0, 18);
+            this.label8.TabIndex = 12;
+            this.label8.Click += new System.EventHandler(this.label8_Click);
+            // 
             // pictureBox1
             // 
             this.pictureBox1.BackgroundImage = global::QuanLySieuThi.Properties.Resources.pngtree_trolley_cart_icon_for_your_project_png_image_1571357;
@@ -232,29 +254,6 @@
             this.button1.Click += new System.EventHandler(this.button1_Click);
             this.button1.Enter += new System.EventHandler(this.button1_Click);
             // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Century Gothic", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.label7.Location = new System.Drawing.Point(306, 517);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(169, 34);
-            this.label7.TabIndex = 11;
-            this.label7.Text = "Tutorial By\r\nTiến Sĩ  Dương Thị Kim Chi";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            this.label8.Location = new System.Drawing.Point(609, 291);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(135, 18);
-            this.label8.TabIndex = 12;
-            this.label8.Text = "Đăng Ký Tài Khoản";
-            this.label8.Click += new System.EventHandler(this.label8_Click);
-            // 
             // Dangnhap
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -264,7 +263,7 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.panel1);
-            this.Controls.Add(this.CheckBox1);
+            this.Controls.Add(this.CheckBoxHienThiMatKhau);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.groupBox2);
@@ -293,7 +292,7 @@
 
         #endregion
 
-        internal System.Windows.Forms.CheckBox CheckBox1;
+        internal System.Windows.Forms.CheckBox CheckBoxHienThiMatKhau;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.GroupBox groupBox2;

@@ -256,7 +256,7 @@ namespace QuanLySieuThi.banhang
         {
             try
             {
-                if (txttim.Text == "")
+                if (txtSDTKH.Text == "")
                 {
                     MessageBox.Show("Bạn chưa nhập tên file!", "Thông báo", MessageBoxButtons.OK);
                 }
@@ -320,7 +320,7 @@ namespace QuanLySieuThi.banhang
 
                     // ================== XUẤT EXCEL NHƯ CŨ ==================
                     string duongdan = "C:\\Users\\HPs\\Downloads\\BaiTapLon_QLsieuthi\\excel\\NhapNhieu";
-                    string tenfile = txttim.Text.ToString();
+                    string tenfile = txtSDTKH.Text.ToString();
                     XuatExecl.nhapnhieu(dta2, duongdan, tenfile, lb_tien.Text, lb_Tile.Text, txt_chietKhau.Text);
 
                     MessageBox.Show("Xuất file thành công", "Thông báo", MessageBoxButtons.OK);
@@ -571,6 +571,11 @@ namespace QuanLySieuThi.banhang
                 MessageBox.Show("Lỗi khi thanh toán: " + ex.Message,
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+
+        }
+
+        private void txtSDTKH_TextChanged(object sender, EventArgs e)
+        {
 
         }
     }

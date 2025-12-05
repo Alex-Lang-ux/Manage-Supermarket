@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Data.SqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 namespace QuanLySieuThi
 {
@@ -44,125 +45,91 @@ namespace QuanLySieuThi
 
         private void CheckBox1_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckBox1.Checked)
-            {
-                txt_mk.UseSystemPasswordChar = true;
-
-            }
-            else
-                txt_mk.UseSystemPasswordChar = false;
+            if (CheckBoxHienThiMatKhau.Checked) { txt_mk.UseSystemPasswordChar = true; } else txt_mk.UseSystemPasswordChar = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int sai = 5;
-            string sql1 = "Select count(*) from Admin where tk='" + txt_tk.Text.Trim() + "' and mk='" + txt_mk.Text.Trim() + "' ";
-            string sql2 = "Select count(*) from tknhanvien where tk ='" + txt_tk.Text + "'and mk ='" + txt_mk.Text + "'";
-            string sql3 = "Select count(*) from tkquanly where tk='" + txt_tk.Text + "' and mk ='" + txt_mk.Text + "' ";
-            if (txt_tk.Text == "")
+            if (string.IsNullOrWhiteSpace(txt_tk.Text))
             {
-                MessageBox.Show("Bạn chưa nhập tên tài khoản ", "Thông báo", MessageBoxButtons.OK);
+                MessageBox.Show("Bạn chưa nhập tên tài khoản!", "Thông báo", MessageBoxButtons.OK);
+                return;
             }
-            else if (txt_mk.Text == "")
-                MessageBox.Show("Bạn chưa nhập mật khẩu  ", "Thông báo", MessageBoxButtons.OK);
-            else
+            if (string.IsNullOrWhiteSpace(txt_mk.Text))
             {
+                MessageBox.Show("Bạn chưa nhập mật khẩu!", "Thông báo", MessageBoxButtons.OK);
+                return;
+            }
 
-                int a = 0, b = 0, c = 0;
-                mycon = new SqlConnection(sqlcon);
-                mycon.Open();
-
-           
-                com = new SqlCommand(sql1, mycon);
-                a = (int)com.ExecuteScalar();
-              
-                SqlCommand com1 = new SqlCommand(sql2, mycon);
-                
-                b = (int)com1.ExecuteScalar();
-                
-                SqlCommand com2 = new SqlCommand(sql3, mycon);
-                c = (int)com2.ExecuteScalar();
-
-                if (sai > 0)
+            try
+            {
+                using (SqlConnection con = new SqlConnection(sqlcon))
                 {
+                    con.Open();
+                    string sqlAdmin = $"SELECT COUNT(*) FROM Admin WHERE TenDangNhap='{txt_tk.Text}' AND MatKhau='{txt_mk.Text}'";
+                    int a = ExecuteCount(sqlAdmin, con, txt_tk.Text.Trim(), txt_mk.Text.Trim());
+                    string sqlNV = $"SELECT COUNT(*) FROM TaiKhoan WHERE TenDangNhap='{txt_tk.Text}' AND MatKhau='{txt_mk.Text}'";
+                    int b = ExecuteCount(sqlNV, con, txt_tk.Text.Trim(), txt_mk.Text.Trim());
                     if (a > 0)
                     {
                         MessageBox.Show("Bạn đã đăng nhập vào tài khoản Admin", "Thông báo", MessageBoxButtons.OK);
-                        main2 a1 = new main2();
-                        a1.Show();
-                        this.Hide();
-                        a1.lb_quyen.Text = "Admin";
-                        a1.lb_cn1.Text = " Quản lý nhập, xuất kho";
-                        a1.lb_cn2.Text = " Quản lý sản phẩm";
-                        a1.lb_cn3.Text = " Quản lý nhà cung cấp";
-                        a1.lb_cn4.Text = " Quản lý khách hàng, nhân viên";
-                        a1.lb_cn5.Text = " Quản lý tài khoản nhân sự";
-                        a1.bh_phieunhap.Visible = false;
-                        a1.bh_xuatle.Visible = false;
+                        OpenMainForm("Admin");
                     }
                     else if (b > 0)
                     {
                         MessageBox.Show("Bạn đã đăng nhập vào tài khoản Nhân Viên", "Thông báo", MessageBoxButtons.OK);
-                        main2 a2 = new main2();
-
-                        a2.Show();
-                        this.Hide();
-                        a2.lb_quyen.Text = "Nhân viên";
-                        a2.lb_cn1.Text = " Quản lý nhập hàng";
-                        a2.lb_cn2.Text = " Quản lý bán hàng";
-                        a2.lb_cn3.Text = " Quản lý xuất lẻ";
-                        a2.lb_cn4.Text = " Quản lý sản phẩm";
-                        a2.lb_cn5.Text = " Quản lý khách hàng";
-                        a2.mn_admin.Visible = false;
-                        a2.mn_tkquanly.Visible = false;
-                        a2.mn_nhanvien.Visible = false;
-                        a2.ql_phieunhap.Visible = false;
-                        a2.ql_phieuxuat.Visible = false;
-                        a2.ql_nhanvien.Visible = false;
-
+                        OpenMainForm("Nhân viên");
                     }
-                    else if (c > 0)
+                    else
                     {
-                        MessageBox.Show("Bạn đã đăng nhập vào tài khoản Quản Lý", "Thông báo", MessageBoxButtons.OK);
-                        main2 a2 = new main2();
-
-                        a2.Show();
-                        this.Hide();
-                        a2.lb_quyen.Text = "Quản Lý";
-                        a2.lb_cn1.Text = " Quản lý nhập, xuất kho";
-                        a2.lb_cn2.Text = " Quản lý sản phẩm";
-                        a2.lb_cn3.Text = " Quản lý nhà cung cấp";
-                        a2.lb_cn4.Text = " Quản lý khách hàng";
-                        a2.lb_cn5.Text = " Quản lý nhân viên";
-                        a2.mn_admin.Visible = false;
-                        a2.mn_tkquanly.Visible = false;
-                        a2.mn_nhanvien.Visible = false;
-                        a2.bh_phieunhap.Visible = false;
-                        a2.bh_xuatle.Visible = false;
+                        MessageBox.Show("Tên đăng nhập hoặc mật khẩu sai! Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK);
                     }
-                    if (a == 0 && b == 0 && c == 0)
-                    {
-
-
-                        string t = "Username hoặc password sai! Bạn vui lòng kiểm tra lại";
-                        MessageBox.Show((t), "Thông báo", MessageBoxButtons.OK);
-
-
-                    }
-
-
-
-
                 }
-
-
-
-
             }
-            // this.Hide();
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi đăng nhập: " + ex.Message, "Lỗi", MessageBoxButtons.OK);
+            }
 
         }
-
+        private int ExecuteCount(string sql, SqlConnection con, string tk, string mk)
+        {
+            using (SqlCommand cmd = new SqlCommand(sql, con))
+            {
+                cmd.Parameters.AddWithValue("@tk", tk);
+                cmd.Parameters.AddWithValue("@mk", mk);
+                return (int)cmd.ExecuteScalar();
+            }
+        }
+        private void OpenMainForm(string quyen)
+        {
+            main2 mainForm = new main2();
+            mainForm.Show();
+            this.Hide();
+            mainForm.lb_quyen.Text = quyen;
+            //switch (quyen)
+            //{
+            //    case "Admin":
+            //        mainForm.bh_phieunhap.Visible = false;
+            //        mainForm.bh_xuatle.Visible = false;
+            //        break;
+            //    case "Nhân viên":
+            //        mainForm.mn_admin.Visible = false;
+            //        mainForm.mn_tkquanly.Visible = false;
+            //        mainForm.mn_nhanvien.Visible = false;
+            //        mainForm.ql_phieunhap.Visible = false;
+                    
+            //        mainForm.ql_nhanvien.Visible = false;
+            //        break;
+            //    case "Quản Lý":
+            //        mainForm.mn_admin.Visible = false;
+            //        mainForm.mn_tkquanly.Visible = false;
+            //        mainForm.mn_nhanvien.Visible = false;
+            //        mainForm.bh_phieunhap.Visible = false;
+            //        mainForm.bh_xuatle.Visible = false;
+            //        break;
+            //}
+        }
         private void button2_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("Bạn có chắc chắn muốn thoát không?", "Thông báo", MessageBoxButtons.OKCancel) == DialogResult.OK)
@@ -203,9 +170,13 @@ namespace QuanLySieuThi
 
         private void label8_Click(object sender, EventArgs e)
         {
-            DangKy b = new DangKy();
-            b.Show();
-            this.Hide();
+            
+            
+        }
+
+        private void txt_tk_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

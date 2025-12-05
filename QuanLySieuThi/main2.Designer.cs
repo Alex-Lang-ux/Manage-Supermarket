@@ -40,16 +40,18 @@
             this.mn_dx = new System.Windows.Forms.ToolStripMenuItem();
             this.mn_quanly = new System.Windows.Forms.ToolStripMenuItem();
             this.ql_phieunhap = new System.Windows.Forms.ToolStripMenuItem();
-            this.ql_phieuxuat = new System.Windows.Forms.ToolStripMenuItem();
             this.ql_ncc = new System.Windows.Forms.ToolStripMenuItem();
             this.ql_khachhang = new System.Windows.Forms.ToolStripMenuItem();
             this.ql_nhanvien = new System.Windows.Forms.ToolStripMenuItem();
             this.quảnLýSảnPhẩmToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ql_hoadon = new System.Windows.Forms.ToolStripMenuItem();
             this.mn_banhang = new System.Windows.Forms.ToolStripMenuItem();
             this.bh_phieunhap = new System.Windows.Forms.ToolStripMenuItem();
             this.bh_nhapnhieu = new System.Windows.Forms.ToolStripMenuItem();
             this.bh_xuatle = new System.Windows.Forms.ToolStripMenuItem();
             this.bh_bannhieu = new System.Windows.Forms.ToolStripMenuItem();
+            this.lậpPhiếuĐổiHàngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.lậpPhiếuTrảHàngToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.label2 = new System.Windows.Forms.Label();
@@ -58,7 +60,6 @@
             this.lb_cn3 = new System.Windows.Forms.Label();
             this.lb_cn2 = new System.Windows.Forms.Label();
             this.lb_cn1 = new System.Windows.Forms.Label();
-            this.ql_hoadon = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -89,6 +90,7 @@
             this.menuStrip1.Size = new System.Drawing.Size(1198, 36);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menu";
+            this.menuStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.menuStrip1_ItemClicked);
             // 
             // mn_hethong
             // 
@@ -154,7 +156,6 @@
             // 
             this.mn_quanly.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ql_phieunhap,
-            this.ql_phieuxuat,
             this.ql_ncc,
             this.ql_khachhang,
             this.ql_nhanvien,
@@ -173,14 +174,6 @@
             this.ql_phieunhap.Size = new System.Drawing.Size(382, 32);
             this.ql_phieunhap.Text = " - Quản lý phiếu nhập";
             this.ql_phieunhap.Click += new System.EventHandler(this.ql_phieunhap_Click);
-            // 
-            // ql_phieuxuat
-            // 
-            this.ql_phieuxuat.Name = "ql_phieuxuat";
-            this.ql_phieuxuat.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D2)));
-            this.ql_phieuxuat.Size = new System.Drawing.Size(382, 32);
-            this.ql_phieuxuat.Text = "- Quản lý phiếu xuất";
-            this.ql_phieuxuat.Click += new System.EventHandler(this.ql_phieuxuat_Click);
             // 
             // ql_ncc
             // 
@@ -214,13 +207,23 @@
             this.quảnLýSảnPhẩmToolStripMenuItem.Text = "- Quản lý sản phẩm";
             this.quảnLýSảnPhẩmToolStripMenuItem.Click += new System.EventHandler(this.quảnLýSảnPhẩmToolStripMenuItem_Click);
             // 
+            // ql_hoadon
+            // 
+            this.ql_hoadon.Name = "ql_hoadon";
+            this.ql_hoadon.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
+            this.ql_hoadon.Size = new System.Drawing.Size(382, 32);
+            this.ql_hoadon.Text = "-Quản lý hóa đơn";
+            this.ql_hoadon.Click += new System.EventHandler(this.ql_hoadon_Click);
+            // 
             // mn_banhang
             // 
             this.mn_banhang.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.bh_phieunhap,
             this.bh_nhapnhieu,
             this.bh_xuatle,
-            this.bh_bannhieu});
+            this.bh_bannhieu,
+            this.lậpPhiếuĐổiHàngToolStripMenuItem,
+            this.lậpPhiếuTrảHàngToolStripMenuItem});
             this.mn_banhang.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.mn_banhang.Name = "mn_banhang";
             this.mn_banhang.Size = new System.Drawing.Size(112, 32);
@@ -258,6 +261,20 @@
             this.bh_bannhieu.Size = new System.Drawing.Size(307, 32);
             this.bh_bannhieu.Text = "- Bán hàng";
             this.bh_bannhieu.Click += new System.EventHandler(this.bh_bannhieu_Click);
+            // 
+            // lậpPhiếuĐổiHàngToolStripMenuItem
+            // 
+            this.lậpPhiếuĐổiHàngToolStripMenuItem.Name = "lậpPhiếuĐổiHàngToolStripMenuItem";
+            this.lậpPhiếuĐổiHàngToolStripMenuItem.Size = new System.Drawing.Size(307, 32);
+            this.lậpPhiếuĐổiHàngToolStripMenuItem.Text = "-Lập phiếu đổi hàng";
+            this.lậpPhiếuĐổiHàngToolStripMenuItem.Click += new System.EventHandler(this.lậpPhiếuĐổiHàngToolStripMenuItem_Click);
+            // 
+            // lậpPhiếuTrảHàngToolStripMenuItem
+            // 
+            this.lậpPhiếuTrảHàngToolStripMenuItem.Name = "lậpPhiếuTrảHàngToolStripMenuItem";
+            this.lậpPhiếuTrảHàngToolStripMenuItem.Size = new System.Drawing.Size(307, 32);
+            this.lậpPhiếuTrảHàngToolStripMenuItem.Text = "-Lập phiếu trả hàng";
+            this.lậpPhiếuTrảHàngToolStripMenuItem.Click += new System.EventHandler(this.lậpPhiếuTrảHàngToolStripMenuItem_Click);
             // 
             // label1
             // 
@@ -354,14 +371,6 @@
             this.lb_cn1.TabIndex = 15;
             this.lb_cn1.Text = "*                                              ";
             // 
-            // ql_hoadon
-            // 
-            this.ql_hoadon.Name = "ql_hoadon";
-            this.ql_hoadon.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.D7)));
-            this.ql_hoadon.Size = new System.Drawing.Size(382, 32);
-            this.ql_hoadon.Text = "-Quản lý hóa đơn";
-            this.ql_hoadon.Click += new System.EventHandler(this.ql_hoadon_Click);
-            // 
             // main2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -410,7 +419,6 @@
         public System.Windows.Forms.ToolStripMenuItem mn_dx;
         public System.Windows.Forms.ToolStripMenuItem mn_quanly;
         public System.Windows.Forms.ToolStripMenuItem ql_phieunhap;
-        public System.Windows.Forms.ToolStripMenuItem ql_phieuxuat;
         public System.Windows.Forms.ToolStripMenuItem ql_ncc;
         public System.Windows.Forms.ToolStripMenuItem ql_khachhang;
         public System.Windows.Forms.ToolStripMenuItem ql_nhanvien;
@@ -429,5 +437,7 @@
         public System.Windows.Forms.Label lb_cn2;
         public System.Windows.Forms.Label lb_cn1;
         private System.Windows.Forms.ToolStripMenuItem ql_hoadon;
+        private System.Windows.Forms.ToolStripMenuItem lậpPhiếuĐổiHàngToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem lậpPhiếuTrảHàngToolStripMenuItem;
     }
 }
