@@ -238,7 +238,7 @@
             this.Controls.Add(this.lblTienNhan);
             this.Controls.Add(this.label7);
             this.Name = "QuetQr";
-            this.Text = "QuetQr";
+            this.Text = "Quét QR";
             this.Load += new System.EventHandler(this.QuetQr_Load);
             ((System.ComponentModel.ISupportInitialize)(this.picQR)).EndInit();
             this.ResumeLayout(false);

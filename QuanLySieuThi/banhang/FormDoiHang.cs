@@ -32,9 +32,47 @@ namespace QuanLySieuThi.banhang
                 tong += chenh;
             }
 
-            lblTongChenhLech.Text = tong.ToString("N0") + " VNĐ";
+            if (tong > 0)
+            {
+                lblTongChenhLech.Text = "Khách cần trả thêm: " + tong.ToString("N0") + " VNĐ";
+            }
+            else if (tong < 0)
+            {
+                lblTongChenhLech.Text = "Siêu thị hoàn lại: " + Math.Abs(tong).ToString("N0") + " VNĐ";
+            }
+            else
+            {
+                lblTongChenhLech.Text = "Không có chênh lệch";
+            }
         }
-      
+        private void ResetFormDoiHang()
+        {
+            // Xóa textbox
+            txtMaHD.Clear();
+            txtSoLuong.Clear();
+
+            // Xóa label
+            lblNgayLap.Text = "";
+            lblTongChenhLech.Text = "";
+
+            // Reset combobox
+            if (cbbHinhThucDoi != null) cbbHinhThucDoi.SelectedIndex = -1;
+            if (cbbLyDoDoi != null) cbbLyDoDoi.SelectedIndex = -1;
+
+            // Xóa dữ liệu các DataGridView
+            dgvCTHD.DataSource = null;
+            dgvCTHD.Rows.Clear();
+
+            dgvSanPhamDoi.DataSource = null;
+            dgvSanPhamDoi.Rows.Clear();
+
+            dgvSanPhamChonDoi.DataSource = null;
+            dgvSanPhamChonDoi.Rows.Clear();
+
+            dgvSanPham.DataSource = null;
+            dgvSanPham.Rows.Clear();
+        }
+
 
 
         private void FormDoiHang_Load(object sender, EventArgs e)
@@ -59,6 +97,14 @@ namespace QuanLySieuThi.banhang
             cbbHinhThucDoi.Items.Add("Đổi sang sản phẩm 1 - 1");
             cbbHinhThucDoi.Items.Add("Đổi sang sản phẩm khác loại nhưng giá trị tương đương");
             cbbHinhThucDoi.Items.Add("Đổi sang sản phẩm khác chênh lệch giá trị");
+            DataGridViewButtonColumn btnRemove = new DataGridViewButtonColumn();
+            btnRemove.HeaderText = "Xóa";
+            btnRemove.Text = "X";
+            btnRemove.Name = "btnRemove";
+            btnRemove.Width = 40;
+            btnRemove.UseColumnTextForButtonValue = true;
+
+            dgvSanPhamDoi.Columns.Add(btnRemove);
 
             // Không chọn mặc định
             cbbHinhThucDoi.SelectedIndex = -1;
@@ -85,6 +131,18 @@ namespace QuanLySieuThi.banhang
             dgvSanPhamChonDoi.Columns.Add("ThanhTienMoi", "Thành tiền (mới)");
             // 9: Số tiền chênh lệch
             dgvSanPhamChonDoi.Columns.Add("SoTienChenhLech", "Chênh lệch");
+            DataGridViewComboBoxColumn colTinhTrang = new DataGridViewComboBoxColumn();
+            colTinhTrang.HeaderText = "Tình trạng hàng";
+            colTinhTrang.Name = "TinhTrangHang";
+            colTinhTrang.Items.Add("Còn nguyên tem/mác");
+            colTinhTrang.Items.Add("Mẻ nhẹ");
+            colTinhTrang.Items.Add("Vỡ hoàn toàn");
+            colTinhTrang.Items.Add("Lỗi do NSX");
+            colTinhTrang.Items.Add("Không hoạt động");
+            colTinhTrang.Items.Add("Khác");
+
+            // Thêm vào cuối bảng
+            dgvSanPhamDoi.Columns.Add(colTinhTrang);
         }
 
         private void guna2DataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -464,9 +522,7 @@ namespace QuanLySieuThi.banhang
                     return;
                 }
 
-                string hinhThuc = cbbHinhThucDoi.SelectedItem.ToString();
-
-                // Phải có sản phẩm gốc đang chọn trong hóa đơn
+                // Phải có sản phẩm cũ đang chọn trong hóa đơn
                 if (dgvCTHD.CurrentRow == null || dgvCTHD.CurrentRow.Index < 0)
                 {
                     MessageBox.Show("Bạn chưa chọn sản phẩm cần đổi trong hóa đơn!", "Thông báo",
@@ -474,13 +530,12 @@ namespace QuanLySieuThi.banhang
                     return;
                 }
 
-                // ================== LẤY SẢN PHẨM CŨ TRÊN HÓA ĐƠN ==================
+                // ===== LẤY THÔNG TIN SẢN PHẨM CŨ TRÊN HÓA ĐƠN =====
                 DataGridViewRow rowOld = dgvCTHD.CurrentRow;
                 string maSPCu = rowOld.Cells[0].Value?.ToString();
                 string tenSPCu = rowOld.Cells[1].Value?.ToString();
-                string soLuongMuaS = rowOld.Cells[3].Value?.ToString(); // số lượng mua trên hóa đơn
+                string soLuongMuaS = rowOld.Cells[3].Value?.ToString();
                 string donGiaCuS = rowOld.Cells[4].Value?.ToString();
-                string thanhTienCuS = rowOld.Cells[5].Value?.ToString();
 
                 int soLuongMua = 0;
                 int.TryParse(soLuongMuaS, out soLuongMua);
@@ -488,16 +543,44 @@ namespace QuanLySieuThi.banhang
                 decimal donGiaCu = 0;
                 decimal.TryParse(donGiaCuS, out donGiaCu);
 
-                decimal thanhTienCu = 0;
-                decimal.TryParse(thanhTienCuS, out thanhTienCu);
+                // ===== LẤY SỐ LƯỢNG MÀ KHÁCH MUỐN ĐỔI (TỪ dgvSanPhamDoi) =====
+                // Giả sử dgvSanPhamDoi: Col[0] = MaSP, Col[4] = SoLuongDoi
+                int soLuongDoi = 0;
+                DataGridViewRow rowDoi = dgvSanPhamDoi.Rows
+                    .Cast<DataGridViewRow>()
+                    .FirstOrDefault(r => !r.IsNewRow &&
+                                         r.Cells[0].Value != null &&
+                                         r.Cells[0].Value.ToString() == maSPCu);
 
-                // ================== LẤY SẢN PHẨM MỚI TRONG DGV SANPHAM ==================
+                if (rowDoi == null)
+                {
+                    MessageBox.Show("Bạn chưa thêm sản phẩm này vào danh sách đổi (và nhập số lượng đổi)!",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                int.TryParse(rowDoi.Cells[4].Value?.ToString(), out soLuongDoi);
+                if (soLuongDoi <= 0)
+                {
+                    MessageBox.Show("Số lượng đổi không hợp lệ!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Không cho lớn hơn số lượng đã mua
+                if (soLuongDoi > soLuongMua)
+                {
+                    MessageBox.Show("Số lượng đổi không được lớn hơn số lượng đã mua (" + soLuongMua + ")!",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // ===== LẤY THÔNG TIN SẢN PHẨM MỚI =====
                 DataGridViewRow rowNew = dgvSanPham.Rows[e.RowIndex];
                 string maSPMoi = rowNew.Cells[0].Value?.ToString();
                 string tenSPMoi = rowNew.Cells[1].Value?.ToString();
-                string loaiSPMoi = rowNew.Cells[2].Value?.ToString();
-                string soLuongTonS = rowNew.Cells[3].Value?.ToString(); // nếu bạn để cột 3 là tồn
-                string donGiaMoiS = rowNew.Cells[4].Value?.ToString(); // cột 4 là đơn giá
+                string soLuongTonS = rowNew.Cells[3].Value?.ToString();
+                string donGiaMoiS = rowNew.Cells[4].Value?.ToString();
 
                 int soLuongTon = 0;
                 int.TryParse(soLuongTonS, out soLuongTon);
@@ -505,36 +588,34 @@ namespace QuanLySieuThi.banhang
                 decimal donGiaMoi = 0;
                 decimal.TryParse(donGiaMoiS, out donGiaMoi);
 
-                // ================== NHỚ SỐ LƯỢNG Ở TRÊN ==================
-                // Số lượng đổi mặc định = số lượng đã mua
-                int soLuongDoi = soLuongMua;
-
-                // Nếu tồn không đủ thì lấy tối đa = tồn
+                // Kiểm tra tồn kho sản phẩm mới
                 if (soLuongTon < soLuongDoi)
                 {
-                    soLuongDoi = soLuongTon;
-                    MessageBox.Show("Số lượng tồn sản phẩm mới không đủ, hệ thống tự động đổi theo số lượng tồn.",
+                    MessageBox.Show("Số lượng tồn sản phẩm mới không đủ.\n" +
+                                    "Hệ thống tự động đổi theo số lượng tồn (" + soLuongTon + ").",
                         "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    soLuongDoi = soLuongTon;
                 }
 
+                // ===== TÍNH TIỀN THEO PHẦN ĐƯỢC ĐỔI =====
+                decimal thanhTienCuDoi = donGiaCu * soLuongDoi;    // chỉ phần bị đổi
                 decimal thanhTienMoi = donGiaMoi * soLuongDoi;
-                decimal soTienChenhLech = thanhTienMoi - thanhTienCu;
+                decimal soTienChenhLech = thanhTienMoi - thanhTienCuDoi;
 
-                // ================== ADD VÀO DGV SANPHAMCHONDOI ==================
+                // ===== THÊM DÒNG VÀO dgvSanPhamChonDoi =====
                 int n = dgvSanPhamChonDoi.Rows.Add();
-                dgvSanPhamChonDoi.Rows[n].Cells[0].Value = maSPCu;               // Mã SP cũ
-                dgvSanPhamChonDoi.Rows[n].Cells[1].Value = tenSPCu;              // Tên SP cũ
-                dgvSanPhamChonDoi.Rows[n].Cells[2].Value = maSPMoi;              // Mã SP mới
-                dgvSanPhamChonDoi.Rows[n].Cells[3].Value = tenSPMoi;             // Tên SP mới
-                dgvSanPhamChonDoi.Rows[n].Cells[4].Value = soLuongDoi.ToString();// Số lượng đổi
-                dgvSanPhamChonDoi.Rows[n].Cells[5].Value = donGiaCu.ToString();  // Đơn giá cũ
-                dgvSanPhamChonDoi.Rows[n].Cells[6].Value = donGiaMoi.ToString(); // Đơn giá mới
-                dgvSanPhamChonDoi.Rows[n].Cells[7].Value = thanhTienCu.ToString(); // Thành tiền cũ
-                dgvSanPhamChonDoi.Rows[n].Cells[8].Value = thanhTienMoi.ToString(); // Thành tiền mới
-                dgvSanPhamChonDoi.Rows[n].Cells[9].Value = soTienChenhLech.ToString(); // Chênh lệch
+                dgvSanPhamChonDoi.Rows[n].Cells[0].Value = maSPCu;
+                dgvSanPhamChonDoi.Rows[n].Cells[1].Value = tenSPCu;
+                dgvSanPhamChonDoi.Rows[n].Cells[2].Value = maSPMoi;
+                dgvSanPhamChonDoi.Rows[n].Cells[3].Value = tenSPMoi;
+                dgvSanPhamChonDoi.Rows[n].Cells[4].Value = soLuongDoi.ToString();
+                dgvSanPhamChonDoi.Rows[n].Cells[5].Value = donGiaCu.ToString();
+                dgvSanPhamChonDoi.Rows[n].Cells[6].Value = donGiaMoi.ToString();
+                dgvSanPhamChonDoi.Rows[n].Cells[7].Value = thanhTienCuDoi.ToString();
+                dgvSanPhamChonDoi.Rows[n].Cells[8].Value = thanhTienMoi.ToString();
+                dgvSanPhamChonDoi.Rows[n].Cells[9].Value = soTienChenhLech.ToString();
 
-                MessageBox.Show("Đã chọn sản phẩm mới để đổi.\nSố lượng đổi dùng theo số lượng trên hóa đơn.",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                // Cập nhật lại tổng chênh lệch
                 TinhTongChenhLech();
             }
             catch (Exception ex)
@@ -608,138 +689,356 @@ namespace QuanLySieuThi.banhang
         private void btnXacNhanThanhToan_Click(object sender, EventArgs e)
         {
             try
-            {
-                int maHD;
-                if (!int.TryParse(txtMaHD.Text, out maHD))
+    {
+                // ================== 0. KIỂM TRA CƠ BẢN ==================
+                if (string.IsNullOrWhiteSpace(txtMaHD.Text))
                 {
-                    MessageBox.Show("Không đọc được mã hóa đơn để cập nhật lại!", "Thông báo",
+                    MessageBox.Show("Bạn chưa nhập mã hóa đơn!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Chỉ cần cập nhật lại hóa đơn cho các trường hợp ĐỔI SANG SẢN PHẨM KHÁC...
-                // (Đổi 1-1 cùng mã sản phẩm thì về bản chất hóa đơn không thay đổi)
-                if (cbbHinhThucDoi.SelectedItem.ToString() != "Đổi sang sản phẩm 1 - 1")
+                int maHD;
+                if (!int.TryParse(txtMaHD.Text, out maHD))
                 {
+                    MessageBox.Show("Mã hóa đơn không hợp lệ!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (cbbHinhThucDoi.SelectedItem == null)
+                {
+                    MessageBox.Show("Bạn chưa chọn hình thức đổi hàng!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                if (cbbLyDoDoi == null || cbbLyDoDoi.SelectedItem == null)
+                {
+                    MessageBox.Show("Bạn chưa chọn lý do đổi hàng!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string hinhThuc = cbbHinhThucDoi.SelectedItem.ToString();
+                string lyDo = cbbLyDoDoi.SelectedItem.ToString();
+
+                // Kiểm tra có dữ liệu chi tiết để lập phiếu
+                if (hinhThuc == "Đổi sang sản phẩm 1 - 1")
+                {
+                    bool coDong = dgvSanPhamDoi.Rows.Cast<DataGridViewRow>()
+                                                    .Any(r => !r.IsNewRow);
+                    if (!coDong)
+                    {
+                        MessageBox.Show("Chưa có sản phẩm nào trong danh sách đổi 1 - 1!", "Thông báo",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+                else
+                {
+                    bool coDong = dgvSanPhamChonDoi.Rows.Cast<DataGridViewRow>()
+                                                        .Any(r => !r.IsNewRow);
+                    if (!coDong)
+                    {
+                        MessageBox.Show("Chưa có sản phẩm nào trong danh sách sản phẩm chọn đổi!", "Thông báo",
+                            MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+                }
+
+                // ================== 1. LẤY MÃ PHIẾU ĐỔI HÀNG MỚI ==================
+                int maPhieu = 1;
+                string sqlGetMa =
+                    "SELECT ISNULL(MAX(MaPhieu),0) + 1 FROM PhieuDoiHang";
+
+                using (SqlDataReader rd = chuoiketnoi.showtext(sqlGetMa))
+                {
+                    if (rd.Read())
+                        maPhieu = int.Parse(rd[0].ToString());
+                }
+
+                // ================== 2. THÊM VÀO PHIEUDOIHANG ==================
+                string ngayLapStr = DateTime.Now.ToString("yyyy-MM-dd");
+                int kiemTraDieuKien = 1; // đã check 30 ngày trước đó
+                int lapPhieuDoi = 1;
+                string maNV = "NULL";    // nếu chưa có MaNV đăng nhập thì để NULL
+
+                string insertPhieu =
+                    "INSERT INTO PhieuDoiHang(MaPhieu, NgayLap, LyDo, PhuongThuc, " +
+                    "KiemTraDieuKienDoiTra, LapPhieuDoi, MaNV, MaHD) VALUES(" +
+                    maPhieu + ", '" +
+                    ngayLapStr + "', N'" +
+                    lyDo.Replace("'", "''") + "', N'" +
+                    hinhThuc.Replace("'", "''") + "', " +
+                    kiemTraDieuKien + ", " +
+                    lapPhieuDoi + ", " +
+                    maNV + ", " +
+                    maHD + ")";
+
+                chuoiketnoi.them_dl1(insertPhieu);
+
+                // ================== 3. THÊM CHI TIẾT PHIẾU ĐỔI ==================
+                string ngayDoiStr = DateTime.Now.ToString("yyyy-MM-dd");
+
+                if (hinhThuc == "Đổi sang sản phẩm 1 - 1")
+                {
+                    // Dữ liệu lấy từ dgvSanPhamDoi
+                    foreach (DataGridViewRow row in dgvSanPhamDoi.Rows)
+                    {
+                        if (row.IsNewRow) continue;
+
+                        int maSP;
+                        int soLuongDoi;
+                        decimal donGia;
+
+                        if (!int.TryParse(row.Cells[0].Value?.ToString(), out maSP))
+                            continue;
+
+                        if (!int.TryParse(row.Cells[4].Value?.ToString(), out soLuongDoi))
+                            soLuongDoi = 1;
+
+                        decimal.TryParse(row.Cells[5].Value?.ToString(), out donGia);
+
+                        decimal soTienChenhLech = 0; // 1 - 1 nên không chênh lệch
+                        string tinhTrang = "";       // bạn có thể lấy từ combobox riêng nếu có
+
+                        string insertCT =
+                            "INSERT INTO ChiTietPhieuDoiHang(MaPhieu, MaSP, SoLuongDoi, NgayDoi, SoTienChenhLech, TinhTrangHang) VALUES(" +
+                            maPhieu + ", " +
+                            maSP + ", " +
+                            soLuongDoi + ", '" +
+                            ngayDoiStr + "', " +
+                            soTienChenhLech.ToString().Replace(',', '.') + ", N'" +
+                            tinhTrang.Replace("'", "''") + "')";
+
+                        chuoiketnoi.them_dl1(insertCT);
+                    }
+                }
+                else
+                {
+                    // Dữ liệu lấy từ dgvSanPhamChonDoi
+                    // 0: MaSPCu, 1: TenSPCu, 2: MaSPMoi, 3: TenSPMoi, 4: SoLuongDoi,
+                    // 5: DonGiaCu, 6: DonGiaMoi, 7: ThanhTienCu, 8: ThanhTienMoi, 9: SoTienChenhLech, 10: TinhTrangHang (nếu có)
                     foreach (DataGridViewRow row in dgvSanPhamChonDoi.Rows)
                     {
                         if (row.IsNewRow) continue;
 
-                        int maSPCu, maSPMoi, soLuongDoi;
-                        decimal thanhTienCuDoi, thanhTienMoiDoi, donGiaMoi;
+                        int maSPMoi, soLuongDoi;
+                        decimal soTienChenhLech;
 
-                        if (!int.TryParse(row.Cells[0].Value?.ToString(), out maSPCu)) continue;  // MaSPCu
-                        if (!int.TryParse(row.Cells[2].Value?.ToString(), out maSPMoi)) continue; // MaSPMoi
-                        if (!int.TryParse(row.Cells[4].Value?.ToString(), out soLuongDoi)) soLuongDoi = 1;
+                        if (!int.TryParse(row.Cells[2].Value?.ToString(), out maSPMoi))
+                            continue;
 
-                        decimal.TryParse(row.Cells[7].Value?.ToString(), out thanhTienCuDoi);  // phần tiền cũ bị đổi
-                        decimal.TryParse(row.Cells[8].Value?.ToString(), out thanhTienMoiDoi); // phần tiền mới
-                        decimal.TryParse(row.Cells[6].Value?.ToString(), out donGiaMoi);        // đơn giá mới
+                        if (!int.TryParse(row.Cells[4].Value?.ToString(), out soLuongDoi))
+                            soLuongDoi = 1;
 
-                        // 6.1. XỬ LÝ SẢN PHẨM CŨ TRONG CHITIETHOADON
-                        // Lấy SoLuong hiện tại
-                        int soLuongCuTrongHD = 0;
-                        decimal thanhTienCuTrongHD = 0;
+                        decimal.TryParse(row.Cells[9].Value?.ToString(), out soTienChenhLech);
 
-                        string sqlGetOld =
-                            "SELECT SoLuong, ThanhTien FROM ChiTietHoaDon " +
-                            "WHERE MaHD = " + maHD + " AND MaSP = " + maSPCu;
-
-                        using (SqlDataReader rdOld = chuoiketnoi.showtext(sqlGetOld))
+                        string tinhTrang = "";
+                        try
                         {
-                            if (rdOld.Read())
+                            // nếu bạn đã đặt Name = "TinhTrangHang" cho cột
+                            if (row.Cells["TinhTrangHang"] != null &&
+                                row.Cells["TinhTrangHang"].Value != null)
                             {
-                                soLuongCuTrongHD = int.Parse(rdOld["SoLuong"].ToString());
-                                thanhTienCuTrongHD = decimal.Parse(rdOld["ThanhTien"].ToString());
+                                tinhTrang = row.Cells["TinhTrangHang"].Value.ToString();
                             }
                         }
+                        catch { /* nếu chưa có cột thì cứ để rỗng */ }
 
-                        // Nếu không tìm thấy dòng cũ thì bỏ qua
-                        if (soLuongCuTrongHD > 0)
+                        string insertCT =
+                            "INSERT INTO ChiTietPhieuDoiHang(MaPhieu, MaSP, SoLuongDoi, NgayDoi, SoTienChenhLech, TinhTrangHang) VALUES(" +
+                            maPhieu + ", " +
+                            maSPMoi + ", " +
+                            soLuongDoi + ", '" +
+                            ngayDoiStr + "', " +
+                            soTienChenhLech.ToString().Replace(',', '.') + ", N'" +
+                            tinhTrang.Replace("'", "''") + "')";
+
+                        chuoiketnoi.them_dl1(insertCT);
+                    }
+                }
+
+                // ================== 4. CẬP NHẬT LẠI CHITIETHOADON + HOADON + TỒN KHO ==================
+                try
+                {
+                    // Chỉ cập nhật hóa đơn và tồn kho cho trường hợp đổi sang SP khác
+                    if (hinhThuc != "Đổi sang sản phẩm 1 - 1")
+                    {
+                        foreach (DataGridViewRow row in dgvSanPhamChonDoi.Rows)
                         {
-                            if (soLuongCuTrongHD <= soLuongDoi)
+                            if (row.IsNewRow) continue;
+
+                            int maSPCu, maSPMoi, soLuongDoi;
+                            decimal thanhTienCuDoi, thanhTienMoiDoi, donGiaMoi;
+
+                            if (!int.TryParse(row.Cells[0].Value?.ToString(), out maSPCu)) continue;  // MaSPCu
+                            if (!int.TryParse(row.Cells[2].Value?.ToString(), out maSPMoi)) continue; // MaSPMoi
+                            if (!int.TryParse(row.Cells[4].Value?.ToString(), out soLuongDoi)) soLuongDoi = 1;
+
+                            decimal.TryParse(row.Cells[7].Value?.ToString(), out thanhTienCuDoi);  // phần tiền cũ bị đổi
+                            decimal.TryParse(row.Cells[8].Value?.ToString(), out thanhTienMoiDoi); // phần tiền mới
+                            decimal.TryParse(row.Cells[6].Value?.ToString(), out donGiaMoi);        // đơn giá mới
+
+                            // 4.1. XỬ LÝ SẢN PHẨM CŨ TRONG CHITIETHOADON
+                            int soLuongCuTrongHD = 0;
+                            decimal thanhTienCuTrongHD = 0;
+
+                            string sqlGetOld =
+                                "SELECT SoLuong, ThanhTien FROM ChiTietHoaDon " +
+                                "WHERE MaHD = " + maHD + " AND MaSP = " + maSPCu;
+
+                            using (SqlDataReader rdOld = chuoiketnoi.showtext(sqlGetOld))
                             {
-                                // Xóa luôn dòng cũ
-                                string sqlDel =
-                                    "DELETE FROM ChiTietHoaDon WHERE MaHD = " + maHD +
-                                    " AND MaSP = " + maSPCu;
-                                chuoiketnoi.luu(sqlDel);
+                                if (rdOld.Read())
+                                {
+                                    soLuongCuTrongHD = int.Parse(rdOld["SoLuong"].ToString());
+                                    thanhTienCuTrongHD = decimal.Parse(rdOld["ThanhTien"].ToString());
+                                }
+                            }
+
+                            if (soLuongCuTrongHD > 0)
+                            {
+                                if (soLuongCuTrongHD <= soLuongDoi)
+                                {
+                                    // Xóa luôn dòng cũ
+                                    string sqlDel =
+                                        "DELETE FROM ChiTietHoaDon WHERE MaHD = " + maHD +
+                                        " AND MaSP = " + maSPCu;
+                                    chuoiketnoi.luu(sqlDel);
+                                }
+                                else
+                                {
+                                    // Giảm số lượng, giảm thành tiền
+                                    string sqlUpdOld =
+                                        "UPDATE ChiTietHoaDon SET " +
+                                        "SoLuong = SoLuong - " + soLuongDoi + ", " +
+                                        "ThanhTien = ThanhTien - " + thanhTienCuDoi.ToString().Replace(',', '.') +
+                                        " WHERE MaHD = " + maHD + " AND MaSP = " + maSPCu;
+                                    chuoiketnoi.luu(sqlUpdOld);
+                                }
+                            }
+
+                            // 4.2. THÊM / CỘNG DỒN SẢN PHẨM MỚI
+                            int countNew = 0;
+                            string sqlCheckNew =
+                                "SELECT COUNT(*) FROM ChiTietHoaDon " +
+                                "WHERE MaHD = " + maHD + " AND MaSP = " + maSPMoi;
+
+                            using (SqlDataReader rdCheckNew = chuoiketnoi.showtext(sqlCheckNew))
+                            {
+                                if (rdCheckNew.Read())
+                                    countNew = int.Parse(rdCheckNew[0].ToString());
+                            }
+
+                            if (countNew > 0)
+                            {
+                                string sqlUpdNew =
+                                    "UPDATE ChiTietHoaDon SET " +
+                                    "SoLuong = SoLuong + " + soLuongDoi + ", " +
+                                    "ThanhTien = ThanhTien + " + thanhTienMoiDoi.ToString().Replace(',', '.') +
+                                    " WHERE MaHD = " + maHD + " AND MaSP = " + maSPMoi;
+                                chuoiketnoi.luu(sqlUpdNew);
                             }
                             else
                             {
-                                // Giảm số lượng, giảm thành tiền
-                                // ThanhTien - phần tiền của số lượng bị đổi
-                                string sqlUpdOld =
-                                    "UPDATE ChiTietHoaDon SET " +
-                                    "SoLuong = SoLuong - " + soLuongDoi + ", " +
-                                    "ThanhTien = ThanhTien - " + thanhTienCuDoi.ToString().Replace(',', '.') +
-                                    " WHERE MaHD = " + maHD + " AND MaSP = " + maSPCu;
-                                chuoiketnoi.luu(sqlUpdOld);
+                                string sqlInsNew =
+                                    "INSERT INTO ChiTietHoaDon(MaHD, MaSP, SoLuong, DonGia, ThanhTien, TinhThanhTien) VALUES(" +
+                                    maHD + ", " +
+                                    maSPMoi + ", " +
+                                    soLuongDoi + ", " +
+                                    donGiaMoi.ToString().Replace(',', '.') + ", " +
+                                    thanhTienMoiDoi.ToString().Replace(',', '.') + ", 1)";
+                                chuoiketnoi.them_dl1(sqlInsNew);
                             }
+
+                            // 4.3. CẬP NHẬT TỒN KHO: trả lại SP cũ, xuất ra SP mới
+                            string sqlUpTonCu =
+                                "UPDATE SanPham SET SoLuongTon = SoLuongTon + " + soLuongDoi +
+                                " WHERE MaSP = " + maSPCu;
+                            chuoiketnoi.luu(sqlUpTonCu);
+
+                            string sqlDownTonMoi =
+                                "UPDATE SanPham SET SoLuongTon = SoLuongTon - " + soLuongDoi +
+                                " WHERE MaSP = " + maSPMoi;
+                            chuoiketnoi.luu(sqlDownTonMoi);
                         }
 
-                        // 6.2. THÊM / CỘNG DỒN SẢN PHẨM MỚI VÀO CHITIETHOADON
-                        int countNew = 0;
-                        string sqlCheckNew =
-                            "SELECT COUNT(*) FROM ChiTietHoaDon " +
-                            "WHERE MaHD = " + maHD + " AND MaSP = " + maSPMoi;
+                        // 4.4. CẬP NHẬT LẠI TỔNG TIỀN HÓA ĐƠN
+                        // 6.0. LẤY TỔNG TIỀN CŨ TRƯỚC KHI ĐỘNG VÀO CHITIETHOADON
+                        decimal tongCu = 0;
+                        string sqlGetTongCu =
+                            "SELECT ISNULL(TongTien,0) FROM HoaDon WHERE MaHD = " + maHD;
 
-                        using (SqlDataReader rdCheckNew = chuoiketnoi.showtext(sqlCheckNew))
+                        using (SqlDataReader rdOldTong = chuoiketnoi.showtext(sqlGetTongCu))
                         {
-                            if (rdCheckNew.Read())
-                                countNew = int.Parse(rdCheckNew[0].ToString());
+                            if (rdOldTong.Read())
+                                tongCu = decimal.Parse(rdOldTong[0].ToString());
                         }
 
-                        if (countNew > 0)
+                        // ... 6.1 + 6.2: bạn xử lý xóa / giảm SP cũ, thêm SP mới như đang làm ...
+
+                        // 6.3. TÍNH LẠI TỔNG TIỀN MỚI TỪ CHITIETHOADON
+                        decimal tongMoi = 0;
+                        string sqlTong =
+                            "SELECT SUM(ThanhTien) FROM ChiTietHoaDon WHERE MaHD = " + maHD;
+
+                        using (SqlDataReader rdTong = chuoiketnoi.showtext(sqlTong))
                         {
-                            // Đã có sẵn mã SP mới trong hóa đơn -> cộng dồn
-                            string sqlUpdNew =
-                                "UPDATE ChiTietHoaDon SET " +
-                                "SoLuong = SoLuong + " + soLuongDoi + ", " +
-                                "ThanhTien = ThanhTien + " + thanhTienMoiDoi.ToString().Replace(',', '.') +
-                                " WHERE MaHD = " + maHD + " AND MaSP = " + maSPMoi;
-                            chuoiketnoi.luu(sqlUpdNew);
+                            if (rdTong.Read() && rdTong[0] != DBNull.Value)
+                                tongMoi = decimal.Parse(rdTong[0].ToString());
+                        }
+
+                        // CẬP NHẬT LẠI HÓA ĐƠN
+                        string sqlUpdateHD =
+                            "UPDATE HoaDon SET TongTien = " +
+                            tongMoi.ToString().Replace(',', '.') +
+                            " WHERE MaHD = " + maHD;
+                        chuoiketnoi.luu(sqlUpdateHD);
+
+                        // 6.4. TÍNH CHÊNH LỆCH TIỀN MẶT PHẢI XỬ LÝ
+                        decimal delta = tongMoi - tongCu;
+
+                        if (delta > 0)
+                        {
+                            // Khách trả thêm
+                            MessageBox.Show("Khách cần trả thêm: " +
+                                delta.ToString("N0") + " VNĐ",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        else if (delta < 0)
+                        {
+                            // Siêu thị hoàn lại
+                            decimal hoanLai = Math.Abs(delta);
+                            MessageBox.Show("Siêu thị cần hoàn lại cho khách: " +
+                                hoanLai.ToString("N0") + " VNĐ",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
                         else
                         {
-                            // Chưa có -> thêm mới
-                            string sqlInsNew =
-                                "INSERT INTO ChiTietHoaDon(MaHD, MaSP, SoLuong, DonGia, ThanhTien, TinhThanhTien) VALUES(" +
-                                maHD + ", " +
-                                maSPMoi + ", " +
-                                soLuongDoi + ", " +
-                                donGiaMoi.ToString().Replace(',', '.') + ", " +
-                                thanhTienMoiDoi.ToString().Replace(',', '.') + ", 1)";
-                            chuoiketnoi.them_dl1(sqlInsNew);
+                            MessageBox.Show("Không có chênh lệch tiền sau khi đổi hàng.",
+                                "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         }
+
                     }
 
-                    // 6.3. CẬP NHẬT LẠI TỔNG TIỀN HÓA ĐƠN
-                    decimal tongMoi = 0;
-                    string sqlTong =
-                        "SELECT SUM(ThanhTien) FROM ChiTietHoaDon WHERE MaHD = " + maHD;
-
-                    using (SqlDataReader rdTong = chuoiketnoi.showtext(sqlTong))
-                    {
-                        if (rdTong.Read() && rdTong[0] != DBNull.Value)
-                            tongMoi = decimal.Parse(rdTong[0].ToString());
-                    }
-
-                    string sqlUpdateHD =
-                        "UPDATE HoaDon SET TongTien = " +
-                        tongMoi.ToString().Replace(',', '.') +
-                        " WHERE MaHD = " + maHD;
-                    chuoiketnoi.luu(sqlUpdateHD);
+                    MessageBox.Show("Lập phiếu đổi hàng và cập nhật lại hóa đơn thành công!",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    ResetFormDoiHang();
                 }
-
-                MessageBox.Show("Lập phiếu đổi hàng và cập nhật lại hóa đơn thành công!",
-                    "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                catch (Exception ex2)
+                {
+                    MessageBox.Show("Lỗi khi cập nhật lại hóa đơn sau đổi hàng: " + ex2.Message,
+                        "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            catch (Exception ex2)
-            {
-                MessageBox.Show("Lỗi khi cập nhật lại hóa đơn sau đổi hàng: " + ex2.Message,
+    catch (Exception ex)
+    {
+                MessageBox.Show("Lỗi khi lập phiếu đổi hàng: " + ex.Message,
                     "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        
         }
 
         private void btnXoa_Click(object sender, EventArgs e)
@@ -791,6 +1090,18 @@ namespace QuanLySieuThi.banhang
         private void txtSoLuong_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void dgvSanPhamDoi_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dgvSanPhamDoi.Columns["btnRemove"].Index && e.RowIndex >= 0)
+            {
+                if (MessageBox.Show("Bạn có chắc muốn xóa sản phẩm này khỏi danh sách đổi?",
+                    "Xác nhận", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                {
+                    dgvSanPhamDoi.Rows.RemoveAt(e.RowIndex);
+                }
+            }
         }
     }
 }

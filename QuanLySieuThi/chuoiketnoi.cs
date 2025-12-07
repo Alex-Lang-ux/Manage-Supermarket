@@ -356,17 +356,24 @@ namespace QuanLySieuThi
             }
             return dt;
         }
-        public static int ExecuteScalar(string sql)
+        public static object ExecuteScalar(string sql)
         {
-            using (var con = new SqlConnection(sqlcon))
+            try
             {
-                con.Open();
-                using (var cmd = new SqlCommand(sql, con))
-                {
-                    return (int)cmd.ExecuteScalar();
-                }
+                mycon = new SqlConnection(sqlcon);
+                mycon.Open();
+                com = new SqlCommand(sql, mycon);
+                object result = com.ExecuteScalar();
+                mycon.Close();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi ExecuteScalar: " + ex.Message);
+                return null;
             }
         }
+
         public static string GetValue(string sql)
         {
             try
@@ -385,6 +392,7 @@ namespace QuanLySieuThi
                 return string.Empty;
             }
         }
+        
 
     }
 }

@@ -56,7 +56,6 @@
             this.txt_timkiem = new System.Windows.Forms.TextBox();
             this.dgvSanPham = new Guna.UI2.WinForms.Guna2DataGridView();
             this.dgvSanPhamChonDoi = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.label4 = new System.Windows.Forms.Label();
             this.dgvSanPhamDoi = new Guna.UI2.WinForms.Guna2DataGridView();
             this.dataGridViewTextBoxColumn15 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dataGridViewTextBoxColumn16 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -78,6 +77,8 @@
             this.label14 = new System.Windows.Forms.Label();
             this.btnXacNhanThanhToan = new System.Windows.Forms.Button();
             this.btnAdd = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.btn_xoa = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCTHD)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSanPham)).BeginInit();
@@ -394,19 +395,6 @@
             this.dgvSanPhamChonDoi.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.dgvSanPhamChonDoi.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.White;
             // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Font = new System.Drawing.Font("Bahnschrift Condensed", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.Black;
-            this.label4.Location = new System.Drawing.Point(989, 535);
-            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(201, 34);
-            this.label4.TabIndex = 123;
-            this.label4.Text = "Số tiền chênh lệch :";
-            // 
             // dgvSanPhamDoi
             // 
             dataGridViewCellStyle13.BackColor = System.Drawing.Color.White;
@@ -453,7 +441,7 @@
             this.dgvSanPhamDoi.RowHeadersWidth = 51;
             this.dgvSanPhamDoi.RowTemplate.DividerHeight = 5;
             this.dgvSanPhamDoi.RowTemplate.Height = 40;
-            this.dgvSanPhamDoi.Size = new System.Drawing.Size(682, 164);
+            this.dgvSanPhamDoi.Size = new System.Drawing.Size(784, 164);
             this.dgvSanPhamDoi.TabIndex = 125;
             this.dgvSanPhamDoi.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
             this.dgvSanPhamDoi.ThemeStyle.AlternatingRowsStyle.Font = null;
@@ -476,6 +464,7 @@
             this.dgvSanPhamDoi.ThemeStyle.RowsStyle.Height = 40;
             this.dgvSanPhamDoi.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
             this.dgvSanPhamDoi.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.White;
+            this.dgvSanPhamDoi.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvSanPhamDoi_CellContentClick);
             // 
             // dataGridViewTextBoxColumn15
             // 
@@ -525,11 +514,11 @@
             this.lblTongChenhLech.BackColor = System.Drawing.Color.Transparent;
             this.lblTongChenhLech.Font = new System.Drawing.Font("Bahnschrift Condensed", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTongChenhLech.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(192)))));
-            this.lblTongChenhLech.Location = new System.Drawing.Point(1257, 536);
+            this.lblTongChenhLech.Location = new System.Drawing.Point(1079, 544);
             this.lblTongChenhLech.Name = "lblTongChenhLech";
-            this.lblTongChenhLech.Size = new System.Drawing.Size(105, 22);
+            this.lblTongChenhLech.Size = new System.Drawing.Size(79, 22);
             this.lblTongChenhLech.TabIndex = 127;
-            this.lblTongChenhLech.Text = "TongChenhLech";
+            this.lblTongChenhLech.Text = "Chênh lệch";
             this.lblTongChenhLech.Click += new System.EventHandler(this.lblTongChenhLech_Click);
             // 
             // cbbHinhThucDoi
@@ -719,19 +708,48 @@
             this.btnAdd.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnAdd.Location = new System.Drawing.Point(496, 301);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(199, 42);
+            this.btnAdd.Size = new System.Drawing.Size(199, 59);
             this.btnAdd.TabIndex = 126;
             this.btnAdd.Text = "Chọn sản phẩm đổi";
             this.btnAdd.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnAdd.UseVisualStyleBackColor = true;
             this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Font = new System.Drawing.Font("Bahnschrift Condensed", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(989, 535);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(83, 34);
+            this.label4.TabIndex = 123;
+            this.label4.Text = "Lưu ý : ";
+            // 
+            // btn_xoa
+            // 
+            this.btn_xoa.Enabled = false;
+            this.btn_xoa.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btn_xoa.Image = global::QuanLySieuThi.Properties.Resources.Custom_Icon_Design_Pretty_Office_8_Trash_can;
+            this.btn_xoa.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.btn_xoa.Location = new System.Drawing.Point(496, 366);
+            this.btn_xoa.Margin = new System.Windows.Forms.Padding(4);
+            this.btn_xoa.Name = "btn_xoa";
+            this.btn_xoa.Size = new System.Drawing.Size(199, 59);
+            this.btn_xoa.TabIndex = 139;
+            this.btn_xoa.Text = "Xóa";
+            this.btn_xoa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btn_xoa.UseVisualStyleBackColor = true;
+            // 
             // btnCheck
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1409, 859);
+            this.ClientSize = new System.Drawing.Size(1552, 859);
+            this.Controls.Add(this.btn_xoa);
             this.Controls.Add(this.label14);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnXoa);
@@ -755,7 +773,7 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.txtMaHD);
             this.Name = "btnCheck";
-            this.Text = "FormDoiHang";
+            this.Text = "Đổi hàng";
             this.Load += new System.EventHandler(this.FormDoiHang_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvCTHD)).EndInit();
             this.groupBox3.ResumeLayout(false);
@@ -783,7 +801,6 @@
         private System.Windows.Forms.TextBox txt_timkiem;
         private Guna.UI2.WinForms.Guna2DataGridView dgvSanPham;
         private Guna.UI2.WinForms.Guna2DataGridView dgvSanPhamChonDoi;
-        private System.Windows.Forms.Label label4;
         private Guna.UI2.WinForms.Guna2DataGridView dgvSanPhamDoi;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn15;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn16;
@@ -805,5 +822,7 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label5;
         internal System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btn_xoa;
     }
 }

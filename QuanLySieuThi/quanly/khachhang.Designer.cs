@@ -97,6 +97,7 @@
             this.txt_timkiem.Name = "txt_timkiem";
             this.txt_timkiem.Size = new System.Drawing.Size(217, 35);
             this.txt_timkiem.TabIndex = 80;
+            this.txt_timkiem.Click += new System.EventHandler(this.txt_search_TextChanged);
             // 
             // label6
             // 
@@ -195,6 +196,7 @@
             this.btnXemThe.Text = "Xem Thẻ";
             this.btnXemThe.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btnXemThe.UseVisualStyleBackColor = true;
+            this.btnXemThe.Click += new System.EventHandler(this.button1_Click);
             // 
             // btn_ex
             // 
@@ -210,6 +212,7 @@
             this.btn_ex.Text = " Excel";
             this.btn_ex.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_ex.UseVisualStyleBackColor = true;
+            this.btn_ex.Click += new System.EventHandler(this.btn_ex_Click);
             // 
             // btn_them
             // 
@@ -226,6 +229,7 @@
             this.btn_them.Text = "Thêm";
             this.btn_them.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_them.UseVisualStyleBackColor = true;
+            this.btn_them.Click += new System.EventHandler(this.btn_them_Click);
             // 
             // btn_sua
             // 
@@ -241,6 +245,7 @@
             this.btn_sua.Text = "Sửa";
             this.btn_sua.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_sua.UseVisualStyleBackColor = true;
+            this.btn_sua.Click += new System.EventHandler(this.btn_sua_Click);
             // 
             // btn_xoa
             // 
@@ -256,6 +261,7 @@
             this.btn_xoa.Text = "Xóa";
             this.btn_xoa.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_xoa.UseVisualStyleBackColor = true;
+            this.btn_xoa.Click += new System.EventHandler(this.btn_xoa_Click);
             // 
             // btn_nhaplai
             // 
@@ -286,6 +292,7 @@
             this.btn_thoat.Text = "Thoát";
             this.btn_thoat.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.btn_thoat.UseVisualStyleBackColor = true;
+            this.btn_thoat.Click += new System.EventHandler(this.btn_thoat_Click);
             // 
             // dta1
             // 
@@ -296,6 +303,7 @@
             this.dta1.RowHeadersWidth = 51;
             this.dta1.Size = new System.Drawing.Size(524, 230);
             this.dta1.TabIndex = 73;
+            this.dta1.Click += new System.EventHandler(this.dta1_Click);
             // 
             // label2
             // 

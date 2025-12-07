@@ -139,12 +139,6 @@
     <Compile Include="quanly\qlhoadon.Designer.cs">
       <DependentUpon>qlhoadon.cs</DependentUpon>
     </Compile>
-    <Compile Include="quanly\qlphieunhap1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="quanly\qlphieunhap1.Designer.cs">
-      <DependentUpon>qlphieunhap1.cs</DependentUpon>
-    </Compile>
     <Compile Include="quanly\sanpham.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -230,9 +224,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="quanly\qlhoadon.resx">
       <DependentUpon>qlhoadon.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="quanly\qlphieunhap1.resx">
-      <DependentUpon>qlphieunhap1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="quanly\sanpham.resx">
       <DependentUpon>sanpham.cs</DependentUpon>

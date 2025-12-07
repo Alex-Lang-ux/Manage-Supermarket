@@ -128,7 +128,6 @@ C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLyS
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.quanly.khachhang.resources
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.quanly.nhacungcap.resources
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.quanly.nhanvien.resources
-C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.quanly.qlphieunhap1.resources
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.quanly.sanpham.resources
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.TaiKhoan.DoiMk.resources
 C:\Demo\SupermarketManagement-main\QuanLySieuThi\QuanLySieuThi\obj\Debug\QuanLySieuThi.tkadmin.resources

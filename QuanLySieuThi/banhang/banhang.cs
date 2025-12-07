@@ -84,14 +84,23 @@ namespace QuanLySieuThi.banhang
 
         private void btn_Add_Click(object sender, EventArgs e)
         {
-            if (txt_dangthuoc.Text == "" || txt_gia.Text == "" || txt_mathuoc.Text == "" ||
-    txt_tenthuoc.Text == "" || txt_thuoctrongkho.Text == "" || txt_slgban.Text == "")
+            try
             {
-                MessageBox.Show("Bạn chưa nhập đầy đủ thông tin", "Thông Báo", MessageBoxButtons.OK);
-            }
-            else
-            {
-                // Đổi sang decimal/int + TryParse cho an toàn
+                
+                // 1. Kiểm tra đã chọn / nhập đầy đủ thông tin sản phẩm chưa
+                if (string.IsNullOrWhiteSpace(txt_mathuoc.Text) ||
+                    string.IsNullOrWhiteSpace(txt_tenthuoc.Text) ||
+                    string.IsNullOrWhiteSpace(txt_dangthuoc.Text) ||
+                    string.IsNullOrWhiteSpace(txt_thuoctrongkho.Text) ||
+                    string.IsNullOrWhiteSpace(txt_slgban.Text) ||
+                    string.IsNullOrWhiteSpace(txt_gia.Text))
+                {
+                    MessageBox.Show("Bạn chưa nhập đầy đủ thông tin sản phẩm!",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // 2. Ép kiểu & kiểm tra dữ liệu số
                 decimal gia;
                 int slBan;
                 int slTon;
@@ -99,88 +108,108 @@ namespace QuanLySieuThi.banhang
 
                 if (!decimal.TryParse(txt_gia.Text, out gia))
                 {
-                    MessageBox.Show("Đơn giá không đúng định dạng số!", "Thông báo", MessageBoxButtons.OK);
+                    MessageBox.Show("Đơn giá không đúng định dạng số!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (!int.TryParse(txt_slgban.Text, out slBan))
+                if (!int.TryParse(txt_slgban.Text, out slBan) || slBan <= 0)
                 {
-                    MessageBox.Show("Số lượng bán không hợp lệ!", "Thông báo", MessageBoxButtons.OK);
+                    MessageBox.Show("Số lượng bán phải là số nguyên dương!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (!int.TryParse(txt_thuoctrongkho.Text, out slTon))
+                if (!int.TryParse(txt_thuoctrongkho.Text, out slTon) || slTon < 0)
                 {
-                    MessageBox.Show("Số lượng tồn không hợp lệ!", "Thông báo", MessageBoxButtons.OK);
+                    MessageBox.Show("Số lượng tồn không hợp lệ!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (txt_chietKhau.Text == "")
+                if (string.IsNullOrWhiteSpace(txt_chietKhau.Text))
                 {
-                    MessageBox.Show("Bạn chưa nhập chiết khấu!", "Thông báo", MessageBoxButtons.OK);
+                    MessageBox.Show("Bạn chưa nhập chiết khấu!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                if (!decimal.TryParse(txt_chietKhau.Text, out chietKhau))
+                if (!decimal.TryParse(txt_chietKhau.Text, out chietKhau) || chietKhau < 0)
                 {
-                    MessageBox.Show("Chiết khấu không đúng định dạng số!", "Thông báo", MessageBoxButtons.OK);
+                    MessageBox.Show("Chiết khấu không đúng định dạng số!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
+                // 3. Kiểm tra số lượng tồn
                 if (slBan > slTon)
                 {
-                    MessageBox.Show("Số lượng sản phẩm trong kho không đủ để bán\nBạn hãy nhập thêm hàng", "Thông báo ", MessageBoxButtons.OK);
+                    MessageBox.Show("Số lượng sản phẩm trong kho không đủ để bán.\nBạn hãy nhập thêm hàng!",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
                 }
-                else
+
+                // 4. Tính số lượng còn lại & thành tiền dòng
+                int slConLai = slTon - slBan;
+                decimal thanhTienDong = gia * slBan;
+
+                // 5. Thêm dòng vào dta2 (giỏ hàng)
+                int n = dta2.Rows.Add();
+                dta2.Rows[n].Cells[0].Value = txt_mathuoc.Text;       // MaSP
+                dta2.Rows[n].Cells[1].Value = txt_tenthuoc.Text;      // TenSP
+                dta2.Rows[n].Cells[2].Value = txt_dangthuoc.Text;     // LoaiSP
+                dta2.Rows[n].Cells[3].Value = gia.ToString();         // Đơn giá
+                dta2.Rows[n].Cells[4].Value = slBan.ToString();       // Số lượng bán
+                dta2.Rows[n].Cells[5].Value = thanhTienDong.ToString(); // Thành tiền dòng
+
+                // 6. Cập nhật số lượng tồn trong bảng SanPham
+                string sqlUpdateTon =
+                    "UPDATE SanPham SET SoLuongTon = '" + slConLai.ToString() +
+                    "' WHERE MaSP = '" + txt_mathuoc.Text + "'";
+                chuoiketnoi.luu(sqlUpdateTon);
+
+                // 7. Load lại sản phẩm theo MaSP lên db1
+                string sqlLoadSP =
+                    "SELECT MaSP, TenSP, LoaiSP, SoLuongTon, DonGia " +
+                    "FROM SanPham WHERE MaSP = '" + txt_mathuoc.Text + "'";
+                chuoiketnoi.Chuoiketnoi(sqlLoadSP, db1);
+
+                // 8. Xóa textbox sản phẩm (để tránh nhầm khi thêm tiếp)
+                txt_dangthuoc.Text = "";
+                txt_gia.Text = "";
+                txt_mathuoc.Text = "";
+                txt_tenthuoc.Text = "";
+                txt_thuoctrongkho.Text = "";
+                txt_slgban.Text = "";
+
+                // 9. Tính lại tổng tiền toàn bộ giỏ hàng + áp dụng chiết khấu
+                decimal tongThanhTien = 0;
+                foreach (DataGridViewRow row in dta2.Rows)
                 {
-                    int slConLai = slTon - slBan;
-                    decimal thanhTienDong = gia * slBan;
+                    if (row.IsNewRow) continue;
 
-                    int n = dta2.Rows.Add();
-                    decimal tongThanhTien = 0;
-
-                    dta2.Rows[n].Cells[0].Value = txt_mathuoc.Text;
-                    dta2.Rows[n].Cells[1].Value = txt_tenthuoc.Text;
-                    dta2.Rows[n].Cells[2].Value = txt_dangthuoc.Text;
-                    dta2.Rows[n].Cells[3].Value = gia.ToString();          // lưu lại giá
-                    dta2.Rows[n].Cells[4].Value = slBan.ToString();         // số lượng bán
-                    dta2.Rows[n].Cells[5].Value = thanhTienDong.ToString(); // thành tiền dòng
-
-                    // Update lại số lượng tồn trong SanPham
-                    string sql1 = "Update SanPham set SoLuongTon ='" + slConLai.ToString() +
-                                  "' WHERE MaSP ='" + dta2.Rows[n].Cells[0].Value.ToString() + "'";
-                    chuoiketnoi.luu(sql1);
-
-                    // Load lại sản phẩm theo MaSP
-                    string load1 = "Select MaSP,TenSP,LoaiSP,SoLuongTon,DonGia from SanPham where MaSP ='" +
-                                   dta2.Rows[n].Cells[0].Value.ToString() + "' ";
-                    chuoiketnoi.Chuoiketnoi(load1, db1);
-
-                    // Clear textbox
-                    txt_dangthuoc.Text = "";
-                    txt_gia.Text = "";
-                    txt_mathuoc.Text = "";
-                    txt_tenthuoc.Text = "";
-                    txt_thuoctrongkho.Text = "";
-                    txt_slgban.Text = "";
-
-                    int sc = dta2.Rows.Count;
-
-                    for (int i = 0; i < sc - 1; i++)
+                    decimal tt;
+                    if (row.Cells[5].Value != null &&
+                        decimal.TryParse(row.Cells[5].Value.ToString(), out tt))
                     {
-                        decimal tt;
-                        if (decimal.TryParse(dta2.Rows[i].Cells[5].Value.ToString(), out tt))
-                        {
-                            tongThanhTien += tt;
-                        }
+                        tongThanhTien += tt;
                     }
-
-                    decimal m = tongThanhTien - tongThanhTien * chietKhau / 100;
-                    lb_tien.Text = m.ToString() + " VNĐ";
                 }
-            }
 
+                decimal tongSauGiam = tongThanhTien - tongThanhTien * chietKhau / 100;
+                lb_tien.Text = tongSauGiam.ToString("N0") + " VNĐ";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi thêm sản phẩm: " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+
+
+
+
 
         private void btn_Xoa_Click(object sender, EventArgs e)
         {
@@ -431,8 +460,46 @@ namespace QuanLySieuThi.banhang
         {
             try
             {
-                // 1. Kiểm tra giỏ hàng
-                if (dta2.Rows.Count <= 1)
+                // HỎI KHÁCH CÓ SỬ DỤNG TÍCH ĐIỂM KHÔNG?
+                bool khachTichDiem = false;
+                DialogResult hoiTichDiem = MessageBox.Show(
+                    "Khách hàng có sử dụng tích điểm không?",
+                    "Tích điểm",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question);
+
+                if (hoiTichDiem == DialogResult.Yes)
+                {
+                    khachTichDiem = true;
+                }
+
+                // 0. SỐ ĐIỆN THOẠI CHỈ BẮT BUỘC NẾU KHÁCH TÍCH ĐIỂM
+                if (khachTichDiem)
+                {
+                    if (string.IsNullOrWhiteSpace(txtSDTKH.Text))
+                    {
+                        MessageBox.Show("Vui lòng nhập số điện thoại khách hàng để tích điểm!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtSDTKH.Focus();
+                        return;
+                    }
+
+                    string sdt = txtSDTKH.Text.Trim();
+                    long temp;
+                    if (!long.TryParse(sdt, out temp))
+                    {
+                        MessageBox.Show("Số điện thoại không hợp lệ!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        txtSDTKH.Focus();
+                        return;
+                    }
+                }
+                // Nếu khách chọn KHÔNG tích điểm thì bỏ qua SĐT, không kiểm tra gì
+
+                // 1. Kiểm tra giỏ hàng (bỏ dòng trống cuối cùng)
+                bool coSanPham = dta2.Rows.Cast<DataGridViewRow>()
+                                          .Any(r => !r.IsNewRow && r.Cells[0].Value != null);
+                if (!coSanPham)
                 {
                     MessageBox.Show("Chưa có sản phẩm nào trong hóa đơn!", "Thông báo",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -462,7 +529,7 @@ namespace QuanLySieuThi.banhang
                     return;
                 }
 
-                // 3. Kiểm tra tiền nhận (cho thanh toán tiền mặt / chuyển khoản đều được)
+                // 3. Kiểm tra tiền nhận
                 if (string.IsNullOrWhiteSpace(txtTienNhan.Text))
                 {
                     MessageBox.Show("Bạn chưa nhập tiền khách đưa!", "Thông báo",
@@ -486,7 +553,7 @@ namespace QuanLySieuThi.banhang
                     return;
                 }
 
-                // 4. Xác định hình thức thanh toán
+                // 4. Hình thức thanh toán
                 string phuongThuc = "Tiền mặt";
                 if (cbbPTTT != null && cbbPTTT.SelectedItem != null)
                 {
@@ -509,31 +576,49 @@ namespace QuanLySieuThi.banhang
                         maHD = int.Parse(rd[0].ToString());
                 }
 
+                // 6.1. Lấy MaKH nếu có (tích điểm là tùy chọn)
+                int? maKHIntNullable = null;
+                string maKHValue = "NULL";
+                if (!string.IsNullOrWhiteSpace(txtMaKH.Text))
+                {
+                    int maKHInt;
+                    if (int.TryParse(txtMaKH.Text, out maKHInt))
+                    {
+                        maKHIntNullable = maKHInt;
+                        maKHValue = maKHInt.ToString();
+                    }
+                }
+
+                // TODO: nếu có txtMaNV thì lấy MaNV thật, tạm để NULL
+                string maNVValue = "NULL";
+
                 // 7. Thêm vào bảng HoaDon
-                // MaNV, MaKH hiện để NULL, bạn có thể sửa lại lấy từ textbox nếu có
                 string insertHD =
                     "INSERT INTO HoaDon(MaHD, NgayLap, TongTien, PhuongThucThanhToan, " +
                     "TinhTongTien, GhiChu, ApDungGiamGia, MaNV, MaKH) VALUES (" +
                     maHD + ", " +
                     "'" + date1.Value.ToString("yyyy-MM-dd") + "', " +
                     tongTien.ToString().Replace(',', '.') + ", " +
-                    "N'" + phuongThuc + "', " +
+                    "N'" + phuongThuc.Replace("'", "''") + "', " +
                     "1, " +
                     "N'', " +
                     apDungGiamGia + ", " +
-                    "NULL, NULL)";
+                    maNVValue + ", " +
+                    maKHValue + ")";
 
                 chuoiketnoi.them_dl1(insertHD);
 
                 // 8. Thêm từng dòng vào ChiTietHoaDon
-                int sc = dta2.Rows.Count;
-                for (int i = 0; i < sc - 1; i++)
+                foreach (DataGridViewRow row in dta2.Rows)
                 {
-                    int maSP = int.Parse(dta2.Rows[i].Cells[0].Value.ToString());
-                    int soLuong = int.Parse(dta2.Rows[i].Cells[4].Value.ToString());
+                    if (row.IsNewRow) continue;
+                    if (row.Cells[0].Value == null) continue;
 
-                    decimal donGia = decimal.Parse(dta2.Rows[i].Cells[3].Value.ToString());
-                    decimal thanhTien = decimal.Parse(dta2.Rows[i].Cells[5].Value.ToString());
+                    int maSP = int.Parse(row.Cells[0].Value.ToString());
+                    int soLuong = int.Parse(row.Cells[4].Value.ToString());
+
+                    decimal donGia = decimal.Parse(row.Cells[3].Value.ToString());
+                    decimal thanhTien = decimal.Parse(row.Cells[5].Value.ToString());
 
                     string insertCT =
                         "INSERT INTO ChiTietHoaDon(MaHD, MaSP, SoLuong, DonGia, ThanhTien, TinhThanhTien) VALUES (" +
@@ -546,25 +631,81 @@ namespace QuanLySieuThi.banhang
                     chuoiketnoi.them_dl1(insertCT);
                 }
 
-                // 9. Mở form "Thanh toán thành công" để xuất Excel nếu cần
-                // Lấy thông tin để in hóa đơn
-                 tongTienText = lb_tien.Text;
-                 tienNhanText = txtTienNhan.Text;
+                // 9. Mở form "Thanh toán thành công"
+                string tongTienHienThi = lb_tien.Text;      // đã có "VNĐ"
+                string tienNhanHienThi = txtTienNhan.Text;
                 string tienThoiText = txtTienThoi.Text;
-                string hinhThucTT = "Tiền mặt";
-                if (cbbPTTT.SelectedItem != null)
-                    hinhThucTT = cbbPTTT.SelectedItem.ToString();
+                string hinhThucTT = phuongThuc;
 
-                // mở form thông báo
                 ThanhToanThanhCong f = new ThanhToanThanhCong(
                     maHD,
                     dta2,
-                    tongTienText,
-                    tienNhanText,
+                    tongTienHienThi,
+                    tienNhanHienThi,
                     tienThoiText,
                     hinhThucTT);
 
                 f.ShowDialog();
+
+                // 1️⃣1️⃣. TÍCH ĐIỂM: CHỈ XỬ LÝ NẾU KHÁCH CHỌN "CÓ" VÀ CÓ MaKH
+                if (khachTichDiem && maKHIntNullable.HasValue)
+                {
+                    int maKHInt = maKHIntNullable.Value;
+
+                    // Giả sử: 10.000 VNĐ = 1 điểm
+                    int diemCong = (int)(tongTien / 10000);
+
+                    if (diemCong > 0)
+                    {
+                        string sqlUpdateDiem =
+                            "UPDATE KhachHang SET " +
+                            "DiemMuaHang = ISNULL(DiemMuaHang,0) + " + diemCong + ", " +
+                            "NgayMuaGanDay = GETDATE(), " +
+                            "TichDiem = 1 " +
+                            "WHERE MaKH = " + maKHInt;
+
+                        chuoiketnoi.luu(sqlUpdateDiem);
+                    }
+
+                    // Lấy lại tổng điểm hiện tại
+                    int tongDiemMoi = 0;
+                    string sqlGetDiem =
+                        "SELECT ISNULL(DiemMuaHang,0) FROM KhachHang WHERE MaKH = " + maKHInt;
+                    using (SqlDataReader rdDiem = chuoiketnoi.showtext(sqlGetDiem))
+                    {
+                        if (rdDiem.Read())
+                            tongDiemMoi = int.Parse(rdDiem[0].ToString());
+                    }
+
+                    if (diemCong > 0)
+                    {
+                        MessageBox.Show(
+                            "Khách hàng được cộng " + diemCong + " điểm.\n" +
+                            "Tổng điểm hiện tại: " + tongDiemMoi,
+                            "Tích điểm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            "Hóa đơn này không đủ điều kiện để cộng thêm điểm.\n" +
+                            "Tổng điểm hiện tại của khách: " + tongDiemMoi,
+                            "Tích điểm", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
+                // Nếu khách chọn KHÔNG hoặc không có MaKH thì không làm gì thêm về tích điểm
+
+                // 1️⃣2️⃣. RESET FORM BÁN HÀNG
+                dta2.Rows.Clear();
+                lb_tien.Text = "";
+                txtTienNhan.Text = "";
+                txtTienThoi.Text = "";
+                txt_chietKhau.Text = "";
+                txtMaKH.Text = "";
+                txtTenKH.Text = "";
+                txtSDTKH.Text = "";
+                if (cbbPTTT != null) cbbPTTT.SelectedIndex = -1;
+
+              
             }
             catch (Exception ex)
             {
@@ -576,7 +717,66 @@ namespace QuanLySieuThi.banhang
 
         private void txtSDTKH_TextChanged(object sender, EventArgs e)
         {
+            if (txtSDTKH.Text.Trim().Length == 10)
+            {
+                btnCheck.PerformClick();
+            }
 
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                string sdt = txtSDTKH.Text.Trim();
+
+                if (string.IsNullOrWhiteSpace(sdt))
+                {
+                    MessageBox.Show("Vui lòng nhập số điện thoại khách hàng!",
+                        "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // Kiểm tra số điện thoại phải là số
+                if (!long.TryParse(sdt, out _))
+                {
+                    MessageBox.Show("Số điện thoại không hợp lệ!", "Thông báo",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                // SQL lấy Khách Hàng theo số điện thoại
+                string sql =
+                    "SELECT MaKH, HoTen " +
+                    "FROM KhachHang " +
+                    "WHERE SoDienThoai = '" + sdt + "'";
+
+                using (SqlDataReader rd = chuoiketnoi.showtext(sql))
+                {
+                    if (rd.Read())
+                    {
+                        // Lấy dữ liệu từ DB
+                        txtMaKH.Text = rd["MaKH"].ToString();
+                        txtTenKH.Text = rd["HoTen"].ToString();
+
+                        MessageBox.Show("Đã tìm thấy khách hàng!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                    else
+                    {
+                        MessageBox.Show("Không tìm thấy khách hàng với số điện thoại này!",
+                            "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        txtMaKH.Clear();
+                        txtTenKH.Clear();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi kiểm tra khách hàng: " + ex.Message,
+                    "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

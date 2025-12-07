@@ -28,7 +28,8 @@ namespace QuanLySieuThi.quanly
                 int diem = Convert.ToInt32(dtKH.Rows[0]["DiemMuaHang"]);
                 string hang = diem >= 5000 ? "Vàng" : diem >= 2000 ? "Bạc" : diem >= 1000 ? "Đồng" : "Không";
                 string sqlRank = $"SELECT COUNT(*) + 1 FROM KhachHang WHERE DiemMuaHang > {diem}";
-                int thuHangSo = chuoiketnoi.ExecuteScalar(sqlRank);
+                int thuHangSo = Convert.ToInt32(chuoiketnoi.ExecuteScalar(sqlRank));
+
 
                 txtThuHang.Text = hang == "Không" ? hang : $"{hang} ({thuHangSo})";
                 string sqlThe = $"SELECT QuyenTang, ThoiHan FROM TheKhachHangThanThiet WHERE MaKH = {maKH}";

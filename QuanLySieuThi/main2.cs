@@ -29,13 +29,14 @@ namespace QuanLySieuThi
 
         public void tàiKhoảnNhânViênToolStripMenuItem_Click(object sender, EventArgs e)
         {
-           
+            MessageBox.Show("Hệ thống đang cập nhật ! ", "Thông báo",
+                   MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         public void mn_tkquanly_Click(object sender, EventArgs e)
         {
-            tkquanly a = new tkquanly();
-            a.Show();
+            MessageBox.Show("Hệ thống đang cập nhật !", "Thông báo",
+                   MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void mn_admin_Click(object sender, EventArgs e)
@@ -97,7 +98,7 @@ namespace QuanLySieuThi
 
         private void bh_bannhieu_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Bạn chưa nhập tên tài khoản!", "Thông báo", MessageBoxButtons.OK);
+            
             banhang.banhang a = new banhang.banhang();
             a.Show();
         }
@@ -116,8 +117,8 @@ namespace QuanLySieuThi
 
         private void ql_phieunhap_Click(object sender, EventArgs e)
         {
-            quanly.qlphieunhap1 a = new quanly.qlphieunhap1();
-            a.Show();
+            //quanly.qlphieunhap1 a = new quanly.qlphieunhap1();
+            //a.Show();
         }
 
         private void ql_phieuxuat_Click(object sender, EventArgs e)
@@ -161,6 +162,12 @@ namespace QuanLySieuThi
         private void lậpPhiếuTrảHàngToolStripMenuItem_Click(object sender, EventArgs e)
         {
             banhang.FormTraHang a = new banhang.FormTraHang();
+            a.Show();
+        }
+
+        private void lậpPhiếuNhậpHàngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            banhang.PhieuNhap a = new banhang.PhieuNhap();
             a.Show();
         }
     }

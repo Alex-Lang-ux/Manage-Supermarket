@@ -20,6 +20,10 @@ namespace QuanLySieuThi
         public static SqlDataAdapter ad;
         public static DataTable dt;
         public static SqlCommandBuilder bd;
+
+        // Biến đếm số lần đăng nhập sai
+        private int failedAttempts = 0;
+
         public Dangnhap()
         {
             InitializeComponent();
@@ -70,19 +74,40 @@ namespace QuanLySieuThi
                     int a = ExecuteCount(sqlAdmin, con, txt_tk.Text.Trim(), txt_mk.Text.Trim());
                     string sqlNV = $"SELECT COUNT(*) FROM TaiKhoan WHERE TenDangNhap='{txt_tk.Text}' AND MatKhau='{txt_mk.Text}'";
                     int b = ExecuteCount(sqlNV, con, txt_tk.Text.Trim(), txt_mk.Text.Trim());
+
                     if (a > 0)
                     {
+                        // Đăng nhập thành công -> reset lại số lần nhập sai
+                        failedAttempts = 0;
+
                         MessageBox.Show("Bạn đã đăng nhập vào tài khoản Admin", "Thông báo", MessageBoxButtons.OK);
                         OpenMainForm("Admin");
                     }
                     else if (b > 0)
                     {
+                        // Đăng nhập thành công -> reset lại số lần nhập sai
+                        failedAttempts = 0;
+
                         MessageBox.Show("Bạn đã đăng nhập vào tài khoản Nhân Viên", "Thông báo", MessageBoxButtons.OK);
                         OpenMainForm("Nhân viên");
                     }
                     else
                     {
-                        MessageBox.Show("Tên đăng nhập hoặc mật khẩu sai! Vui lòng kiểm tra lại.", "Thông báo", MessageBoxButtons.OK);
+                        // Đăng nhập sai
+                        failedAttempts++;
+
+                        if (failedAttempts >= 5)
+                        {
+                            MessageBox.Show("Bạn đã nhập sai 5 lần. Chương trình sẽ kết thúc!", "Cảnh báo", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            Application.Exit();
+                            return;
+                        }
+                        else
+                        {
+                            int conLai = 5 - failedAttempts;
+                            MessageBox.Show("Tên đăng nhập hoặc mật khẩu sai! Bạn còn " + conLai + " lần thử.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
                     }
                 }
             }
@@ -118,7 +143,7 @@ namespace QuanLySieuThi
             //        mainForm.mn_tkquanly.Visible = false;
             //        mainForm.mn_nhanvien.Visible = false;
             //        mainForm.ql_phieunhap.Visible = false;
-                    
+
             //        mainForm.ql_nhanvien.Visible = false;
             //        break;
             //    case "Quản Lý":
@@ -170,8 +195,8 @@ namespace QuanLySieuThi
 
         private void label8_Click(object sender, EventArgs e)
         {
-            
-            
+
+
         }
 
         private void txt_tk_TextChanged(object sender, EventArgs e)

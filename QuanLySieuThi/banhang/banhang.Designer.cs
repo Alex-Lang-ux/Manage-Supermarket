@@ -70,15 +70,15 @@
             this.label15 = new System.Windows.Forms.Label();
             this.txtTienThoi = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtMaKH = new System.Windows.Forms.TextBox();
             this.label17 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.txtTenKH = new System.Windows.Forms.TextBox();
             this.btnXacNhanThanhToan = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.btn_Xoa = new System.Windows.Forms.Button();
             this.btn_Add = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnCheck = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.db1)).BeginInit();
@@ -147,7 +147,7 @@
             this.txt_tenthuoc.Location = new System.Drawing.Point(140, 81);
             this.txt_tenthuoc.Margin = new System.Windows.Forms.Padding(4);
             this.txt_tenthuoc.Name = "txt_tenthuoc";
-            this.txt_tenthuoc.Size = new System.Drawing.Size(223, 27);
+            this.txt_tenthuoc.Size = new System.Drawing.Size(272, 27);
             this.txt_tenthuoc.TabIndex = 1;
             // 
             // txt_mathuoc
@@ -157,7 +157,7 @@
             this.txt_mathuoc.Location = new System.Drawing.Point(140, 33);
             this.txt_mathuoc.Margin = new System.Windows.Forms.Padding(4);
             this.txt_mathuoc.Name = "txt_mathuoc";
-            this.txt_mathuoc.Size = new System.Drawing.Size(95, 27);
+            this.txt_mathuoc.Size = new System.Drawing.Size(97, 27);
             this.txt_mathuoc.TabIndex = 0;
             // 
             // label10
@@ -167,9 +167,9 @@
             this.label10.Location = new System.Drawing.Point(13, 135);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(90, 21);
+            this.label10.Size = new System.Drawing.Size(117, 21);
             this.label10.TabIndex = 10;
-            this.label10.Text = "Đơn vị tính";
+            this.label10.Text = "Loại sản phẩm";
             // 
             // txt_dangthuoc
             // 
@@ -178,7 +178,7 @@
             this.txt_dangthuoc.Location = new System.Drawing.Point(140, 129);
             this.txt_dangthuoc.Margin = new System.Windows.Forms.Padding(4);
             this.txt_dangthuoc.Name = "txt_dangthuoc";
-            this.txt_dangthuoc.Size = new System.Drawing.Size(97, 27);
+            this.txt_dangthuoc.Size = new System.Drawing.Size(272, 27);
             this.txt_dangthuoc.TabIndex = 2;
             // 
             // txt_slgban
@@ -307,7 +307,7 @@
             // 
             this.label11.AutoSize = true;
             this.label11.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label11.Location = new System.Drawing.Point(417, 708);
+            this.label11.Location = new System.Drawing.Point(424, 698);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(154, 42);
@@ -317,7 +317,7 @@
             // txtSDTKH
             // 
             this.txtSDTKH.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSDTKH.Location = new System.Drawing.Point(579, 708);
+            this.txtSDTKH.Location = new System.Drawing.Point(586, 692);
             this.txtSDTKH.Margin = new System.Windows.Forms.Padding(4);
             this.txtSDTKH.Multiline = true;
             this.txtSDTKH.Name = "txtSDTKH";
@@ -378,6 +378,7 @@
             this.txt_chietKhau.Name = "txt_chietKhau";
             this.txt_chietKhau.Size = new System.Drawing.Size(51, 35);
             this.txt_chietKhau.TabIndex = 59;
+            this.txt_chietKhau.Text = "0";
             this.txt_chietKhau.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_chietKhau_KeyPress);
             // 
             // label5
@@ -458,9 +459,9 @@
             this.label9.Location = new System.Drawing.Point(59, 816);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(93, 21);
+            this.label9.Size = new System.Drawing.Size(130, 21);
             this.label9.TabIndex = 70;
-            this.label9.Text = "Thành Tiền";
+            this.label9.Text = "PT thanh toán : ";
             // 
             // cbbPTTT
             // 
@@ -468,7 +469,7 @@
             this.cbbPTTT.Items.AddRange(new object[] {
             "Tiền mặt",
             "Chuyển khoản ngân hàng"});
-            this.cbbPTTT.Location = new System.Drawing.Point(185, 813);
+            this.cbbPTTT.Location = new System.Drawing.Point(185, 816);
             this.cbbPTTT.Name = "cbbPTTT";
             this.cbbPTTT.Size = new System.Drawing.Size(215, 24);
             this.cbbPTTT.TabIndex = 71;
@@ -521,43 +522,43 @@
             // 
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label16.Location = new System.Drawing.Point(417, 825);
+            this.label16.Location = new System.Drawing.Point(424, 809);
             this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(143, 21);
             this.label16.TabIndex = 108;
             this.label16.Text = "Tên khách hàng : ";
             // 
-            // textBox1
+            // txtMaKH
             // 
-            this.textBox1.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(579, 762);
-            this.textBox1.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(235, 38);
-            this.textBox1.TabIndex = 109;
+            this.txtMaKH.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMaKH.Location = new System.Drawing.Point(586, 746);
+            this.txtMaKH.Margin = new System.Windows.Forms.Padding(4);
+            this.txtMaKH.Multiline = true;
+            this.txtMaKH.Name = "txtMaKH";
+            this.txtMaKH.Size = new System.Drawing.Size(235, 38);
+            this.txtMaKH.TabIndex = 109;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label17.Location = new System.Drawing.Point(417, 779);
+            this.label17.Location = new System.Drawing.Point(424, 763);
             this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(137, 21);
             this.label17.TabIndex = 110;
             this.label17.Text = "Mã khách hàng : ";
             // 
-            // textBox2
+            // txtTenKH
             // 
-            this.textBox2.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(579, 808);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(4);
-            this.textBox2.Multiline = true;
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(235, 38);
-            this.textBox2.TabIndex = 111;
+            this.txtTenKH.Font = new System.Drawing.Font("Tahoma", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtTenKH.Location = new System.Drawing.Point(586, 792);
+            this.txtTenKH.Margin = new System.Windows.Forms.Padding(4);
+            this.txtTenKH.Multiline = true;
+            this.txtTenKH.Name = "txtTenKH";
+            this.txtTenKH.Size = new System.Drawing.Size(235, 38);
+            this.txtTenKH.TabIndex = 111;
             // 
             // btnXacNhanThanhToan
             // 
@@ -635,29 +636,30 @@
             this.btn_Add.UseVisualStyleBackColor = true;
             this.btn_Add.Click += new System.EventHandler(this.btn_Add_Click);
             // 
-            // button2
+            // btnCheck
             // 
-            this.button2.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(822, 698);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(67, 52);
-            this.button2.TabIndex = 112;
-            this.button2.Text = "Chọn";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnCheck.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCheck.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCheck.Location = new System.Drawing.Point(829, 688);
+            this.btnCheck.Margin = new System.Windows.Forms.Padding(4);
+            this.btnCheck.Name = "btnCheck";
+            this.btnCheck.Size = new System.Drawing.Size(85, 52);
+            this.btnCheck.TabIndex = 112;
+            this.btnCheck.Text = "Chọn";
+            this.btnCheck.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnCheck.UseVisualStyleBackColor = true;
+            this.btnCheck.Click += new System.EventHandler(this.button2_Click);
             // 
             // banhang
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.ClientSize = new System.Drawing.Size(1005, 961);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.textBox2);
+            this.ClientSize = new System.Drawing.Size(992, 961);
+            this.Controls.Add(this.btnCheck);
+            this.Controls.Add(this.txtTenKH);
             this.Controls.Add(this.label17);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtMaKH);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.btnXacNhanThanhToan);
             this.Controls.Add(this.txtTienThoi);
@@ -751,9 +753,9 @@
         private System.Windows.Forms.TextBox txtTienThoi;
         private System.Windows.Forms.Button btnXacNhanThanhToan;
         private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtMaKH;
         private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.TextBox txtTenKH;
+        private System.Windows.Forms.Button btnCheck;
     }
 }

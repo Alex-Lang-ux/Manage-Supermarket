@@ -49,7 +49,8 @@ namespace QuanLySieuThi.quanly
                 if (!string.IsNullOrEmpty(hang))
                 {
                     string checkSql = $"SELECT COUNT(*) FROM TheKhachHangThanThiet WHERE MaKH = '{makh}'";
-                    int count = chuoiketnoi.ExecuteScalar(checkSql);
+                    int count = Convert.ToInt32(chuoiketnoi.ExecuteScalar(checkSql));
+
 
                     int days = hang == "Đồng" ? 30 : hang == "Bạc" ? 40 : 50;
 
@@ -159,22 +160,12 @@ namespace QuanLySieuThi.quanly
             btn_sua.Enabled = true;
             btn_xoa.Enabled = true;
 
-            string hang = dta1.Rows[r].Cells["KhachHangThanThiet"].Value.ToString();
+           
             string maKH = txt_makh.Text;
             btnXemThe.Visible = false;
             btnXemThe.Enabled = false;
 
-            if (hang != "Không")
-            {
-                string sqlCheck = $"SELECT COUNT(*) FROM TheKhachHangThanThiet WHERE MaKH = '{maKH}'";
-                int count = chuoiketnoi.ExecuteScalar(sqlCheck);
-
-                if (count > 0)
-                {
-                    btnXemThe.Visible = true;
-                    btnXemThe.Enabled = true;
-                }
-            }
+            
         }
 
         private void txt_sdt_KeyPress(object sender, KeyPressEventArgs e)
